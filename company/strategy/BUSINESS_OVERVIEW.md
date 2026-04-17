@@ -32,6 +32,10 @@
 - クレジットカード発行（2ヶ月使用）
 - SNS運用代行（有料実装）
 
+## メディアURL
+
+- Instagram: https://www.instagram.com/hitomono_chiiki (@hitomono_chiiki)
+
 ## 現フェーズ
 
 - **立ち上げ期**: 編集部からの声がけで無料掲載を案内
