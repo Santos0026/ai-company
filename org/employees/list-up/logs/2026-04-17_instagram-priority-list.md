@@ -60,6 +60,32 @@
 
 ---
 
+## @ハンドル追加調査結果（Jobs指示#03）
+
+| 店舗名 | 結果 | Instagram URL | 備考 |
+|--------|------|--------------|------|
+| あきほ整骨院 | **確定** | instagram.com/akiho8508/ | 公式サイトから直接確認 |
+| エステプロラボ天神 | **確定** | instagram.com/estheprolabo_tenjin/ | フォロワー3,100+・641投稿・活発 |
+| あけぼのばし整骨院 | 特定不可 | — | 招待リンクのみ・除外推奨 |
+| しんじゅろう鍼灸接骨院 | 特定不可 | — | DM予約記載あるがハンドル非公開 |
+| むろまち鍼灸整骨院 | 特定不可 | — | Instagram始動記載あるがURL非公開 |
+| はたほこ整骨鍼灸院 | 特定不可 | — | Instagram配信記載あるがURL非公開 |
+
+### 最終Aランク確定リスト（Instagram URL確定済み）
+
+| 店舗名 | 業種 | 地域 | Instagram URL |
+|--------|------|------|--------------|
+| ミエルヘアー渋谷店 | 美容室 | 東京・渋谷区 | instagram.com/miel.shibuya/ |
+| ネイルサロンログ | ネイル | 東京・渋谷区 | instagram.com/lognail/ |
+| 下北沢ヨガスタジオ ima. | ヨガ | 東京・世田谷区 | instagram.com/simmokitazawa_yoga_ima/ |
+| あきほ整骨院 | 整骨院 | 福岡・中央区 | instagram.com/akiho8508/ |
+| エステプロラボ天神 | エステ | 福岡・中央区 | instagram.com/estheprolabo_tenjin/ |
+
+**URL確定済みAランク：5件**
+**除外（特定不可）に格下げ：4件**
+
+---
+
 ## DM反応率が高い店舗 TOP3（Lunaより）
 
 1. **ミエルヘアー渋谷店**（@miel.shibuya）— Instagram集客が主軸・20代客層・DM文化に慣れている
