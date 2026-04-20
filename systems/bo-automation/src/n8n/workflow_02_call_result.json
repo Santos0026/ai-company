@@ -1,0 +1,118 @@
+{
+  "name": "BO②：電話結果入力 → LINE自動送信",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "call-result",
+        "responseMode": "responseNode"
+      },
+      "name": "Webhook：電話結果受信",
+      "type": "n8n-nodes-base.webhook",
+      "position": [250, 300]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            { "conditions": { "string": [{ "value1": "={{$json.result_type}}", "operation": "equals", "value2": "confirmed" }] } },
+            { "conditions": { "string": [{ "value1": "={{$json.result_type}}", "operation": "equals", "value2": "undecided" }] } },
+            { "conditions": { "string": [{ "value1": "={{$json.result_type}}", "operation": "equals", "value2": "fp_none" }] } },
+            { "conditions": { "string": [{ "value1": "={{$json.result_type}}", "operation": "equals", "value2": "mismatch" }] } },
+            { "conditions": { "string": [{ "value1": "={{$json.result_type}}", "operation": "equals", "value2": "misunderstand" }] } }
+          ]
+        }
+      },
+      "name": "Switch：結果タイプで分岐",
+      "type": "n8n-nodes-base.switch",
+      "position": [450, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = $input.first().json;\nconst name = data.customer_name || 'お客様';\nconst appointmentDate = data.appointment_date || '';\n\nconst confirmMsg = `お世話になっております！\nヒトモノチイキ事務局でございます😊\n\n先日は無料インタビューのお時間をいただきありがとうございました！\n\n${name}様の掲載記事は現在作成中でございます。\n完成しましたら改めてLINEよりご連絡いたします😊\n\nまた、実施アンケート（保険面談）の日程ですが、\n✅ ${appointmentDate}\nにてご予約が確定しているとのこと、ありがとうございます！\n\n面談に際しまして、いくつかご注意事項をお伝えします。\n\n⚫️ 普通のお客様としてライフプランナーさんのお話を最後まで聞いていただきます。\n\n⚫️ 面談終了後、どう感じたかを簡単なアンケートでご報告いただければ大丈夫です。\n\n⚫️「保険に興味があって話を聞きに来た」という形でご参加いただければOKです。\n\n⚫️ ご加入が不要な場合は「少し考えてまた連絡します」とお伝えください。\n\n当日もよろしくお願いいたします😊`;\n\nconst surveyMsg = `${name}様\\t\nお世話になっております😊🍀\nこちら\"完了報告アンケートフォーム\"になります\n\nhttps://docs.google.com/forms/d/e/1FAIpQLSeaoLUoyxUKd2nbuUOszxK1H0h62_7DfwgLvrRIkFbe3cvzvg/viewform\n\nお申し込みいただいた面談が終わりましたらご入力いただき送信ください🤲🌱\n\n【前提として】\nFP相談サービスに関してはお客様の相談の意思があることを前提としたサービスでございます🌿\n\n【どんな相談ができる？🤔】\n🍀月々貯金ができない・・\n🍀NISA(ニーサ)や資産運用について！\n🍀将来の貯金が心配・・\n🍀子供の教育資金や育成費はどれくらい必要か・・\n🍀月々1万円を複利で運用するだけで30年で600万(貯金だと360万)ちかくになることも・・\n🍀今入っている保険は必要なのか・・\n等お金に関する相談なら可能！\n\n引き続きどうぞ宜しくお願いいたします🤲🍀`;\n\nreturn [{ json: { ...data, confirmMsg, surveyMsg } }];"
+      },
+      "name": "確定メッセージ生成",
+      "type": "n8n-nodes-base.code",
+      "position": [650, 150]
+    },
+    {
+      "parameters": {
+        "authentication": "accessToken",
+        "resource": "message",
+        "operation": "push",
+        "to": "={{$json.line_user_id}}",
+        "messages": {
+          "values": [
+            { "type": "text", "text": "={{$json.confirmMsg}}" },
+            { "type": "text", "text": "={{$json.surveyMsg}}" }
+          ]
+        }
+      },
+      "name": "LINE：確定メッセージ送信（2通）",
+      "type": "n8n-nodes-base.line",
+      "position": [850, 150]
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "sheetId": "={{$env.SPREADSHEET_ID}}",
+        "range": "マッチング待ち!AO{{$json.row_number}}",
+        "values": {
+          "values": [["={{$json.appointment_date}}"]]
+        }
+      },
+      "name": "Sheets：AO列に面談日時を自動入力",
+      "type": "n8n-nodes-base.googleSheets",
+      "position": [850, 250]
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = $input.first().json;\nconst name = data.customer_name || 'お客様';\nconst msg = `お世話になっております！\nヒトモノチイキ事務局でございます😊\n\n先日は無料インタビューのお時間をいただきありがとうございました！\n\n${name}様の掲載記事は現在作成中でございます😊\n\n実施アンケートの日程につきましては、お手隙の際にご都合の良い日時が決まりましたらこちらのLINEにてご教示くださいますようよろしくお願いいたします😊`;\nreturn [{ json: { ...data, message: msg } }];"
+      },
+      "name": "未定メッセージ生成",
+      "type": "n8n-nodes-base.code",
+      "position": [650, 350]
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = $input.first().json;\nconst msg = `お世話になっております！\nヒトモノチイキ事務局でございます😊\n\n実施アンケートの担当者よりまだご連絡が届いていない可能性がございます。\n\n迷惑メールフォルダや着信履歴もご確認いただけますか？\n\n弊社からも本日中に担当者へ確認いたしまして、改めてLINEよりご連絡いたします😊`;\nreturn [{ json: { ...data, message: msg } }];"
+      },
+      "name": "FP未連絡メッセージ生成",
+      "type": "n8n-nodes-base.code",
+      "position": [650, 500]
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = $input.first().json;\nconst msg = `お世話になっております！\nヒトモノチイキ事務局でございます😊\n\n一点確認させてください🙏\n\n実施アンケートのお申込みの際のお名前についてご確認させていただきたいのですが、面談に参加される方のお名前をこちらのLINEにて教えていただけますと幸いです😊`;\nreturn [{ json: { ...data, message: msg } }];"
+      },
+      "name": "名前不一致メッセージ生成",
+      "type": "n8n-nodes-base.code",
+      "position": [650, 650]
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = $input.first().json;\nconst name = data.customer_name || 'お客様';\nconst msg = `お世話になっております！\nヒトモノチイキ事務局でございます😊\n\n改めまして実施アンケートについてご説明いたします。\n\n【保険面談について】\nライフプランナーさんとお話しいただき、終了後に簡単なアンケートをご提出いただくものです。\n\nご不明な点がございましたらいつでもご連絡ください😊`;\nreturn [{ json: { ...data, message: msg } }];"
+      },
+      "name": "認識ズレメッセージ生成",
+      "type": "n8n-nodes-base.code",
+      "position": [650, 800]
+    }
+  ],
+  "connections": {
+    "Webhook：電話結果受信": { "main": [[{ "node": "Switch：結果タイプで分岐" }]] },
+    "Switch：結果タイプで分岐": {
+      "main": [
+        [{ "node": "確定メッセージ生成" }],
+        [{ "node": "未定メッセージ生成" }],
+        [{ "node": "FP未連絡メッセージ生成" }],
+        [{ "node": "名前不一致メッセージ生成" }],
+        [{ "node": "認識ズレメッセージ生成" }]
+      ]
+    },
+    "確定メッセージ生成": {
+      "main": [[
+        { "node": "LINE：確定メッセージ送信（2通）" },
+        { "node": "Sheets：AO列に面談日時を自動入力" }
+      ]]
+    }
+  }
+}

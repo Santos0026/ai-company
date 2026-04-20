@@ -1,0 +1,57 @@
+{
+  "name": "BO①：毎朝9時 後確リスト通知",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [{ "field": "hours", "hoursInterval": 24 }]
+        },
+        "triggerAtHour": 9,
+        "triggerAtMinute": 0,
+        "timezone": "Asia/Tokyo"
+      },
+      "name": "毎朝9時トリガー",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "position": [250, 300]
+    },
+    {
+      "parameters": {
+        "url": "=https://script.google.com/macros/s/{{$env.GAS_DEPLOY_ID}}/exec",
+        "options": {}
+      },
+      "name": "GAS：後確リスト取得",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [450, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\nconst list = items[0].json.list || [];\n\nif (list.length === 0) {\n  return [{ json: { skip: true } }];\n}\n\nconst lines = list.map((c, i) => {\n  const name = `${c.fp_last_name}${c.fp_first_name}` || '（名前未取得）';\n  const statusLabel = {\n    confirmed: '✅ 面談日確定済み',\n    waiting: '⏳ マッチング済み・連絡待ち',\n    not_contacted: '❌ FP未連絡',\n    unknown: '⚠️ 要確認'\n  }[c.fp_status] || c.fp_status;\n\n  return `${i + 1}. ${c.hitomono_id} ${name}様\\n   ${statusLabel}`;\n}).join('\\n\\n');\n\nconst message = `📋 本日の後確リスト（${list.length}件）\\n${new Date().toLocaleDateString('ja-JP', {month:'long',day:'numeric',weekday:'short'})}\\n\\n${lines}\\n\\n▼ 電話後はこちらで結果入力\\nhttps://bo-dashboard.vercel.app`;\n\nreturn [{ json: { message, list } }];"
+      },
+      "name": "通知メッセージ生成",
+      "type": "n8n-nodes-base.code",
+      "position": [650, 300]
+    },
+    {
+      "parameters": {
+        "authentication": "accessToken",
+        "resource": "message",
+        "operation": "push",
+        "to": "={{$env.BO_LINE_USER_ID}}",
+        "messages": {
+          "values": [{
+            "type": "text",
+            "text": "={{$node[\"通知メッセージ生成\"].json.message}}"
+          }]
+        }
+      },
+      "name": "LINE：BOに通知",
+      "type": "n8n-nodes-base.line",
+      "position": [850, 300]
+    }
+  ],
+  "connections": {
+    "毎朝9時トリガー": { "main": [[{ "node": "GAS：後確リスト取得" }]] },
+    "GAS：後確リスト取得": { "main": [[{ "node": "通知メッセージ生成" }]] },
+    "通知メッセージ生成": { "main": [[{ "node": "LINE：BOに通知" }]] }
+  }
+}
