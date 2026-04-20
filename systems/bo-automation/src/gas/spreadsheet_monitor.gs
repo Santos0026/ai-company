@@ -8,13 +8,22 @@ const N8N_WEBHOOK_URL = 'https://your-n8n-instance.com/webhook/bo-automation';
 
 // 設定
 const CONFIG = {
-  SHEET_NAME: 'マッチング待ち',
-  COL_LAST_NAME: 6,   // F列：氏（姓）
-  COL_FIRST_NAME: 7,  // G列：名
-  COL_LAST_KANA: 8,   // H列：フリガナ（姓）
-  COL_FIRST_KANA: 9,  // I列：フリガナ（名）
-  COL_APPOINTMENT: 41, // AO列：面談確定日
-  COL_HITOMONO_ID: 1,  // A列：ヒトモノ番号（仮）
+  // 顧客リストシート（SCFG_CMS_ver1）
+  CUSTOMER_SHEET_NAME: 'SCFG_CMS_ver1',
+  COL_HITOMONO_ID: 1,    // A列：ヒトモノ番号
+  COL_INTERVIEW_DATE: 16, // P列：インタビュー日
+  COL_INTERVIEW_TIME: 17, // Q列：インタビュー時間
+
+  // マッチング待ちシート（タスカル）
+  MATCHING_SHEET_NAME: 'マッチング待ち',
+  COL_LAST_NAME: 6,       // F列：氏（姓）
+  COL_FIRST_NAME: 7,      // G列：名
+  COL_LAST_KANA: 8,       // H列：フリガナ（姓）
+  COL_FIRST_KANA: 9,      // I列：フリガナ（名）
+  COL_APPOINTMENT: 41,    // AO列：面談確定日
+
+  // 4営業日後に後確
+  FOLLOWUP_BUSINESS_DAYS: 4,
 };
 
 /**
@@ -54,45 +63,113 @@ function onEdit(e) {
 /**
  * 毎朝9時に実行：本日後確が必要なリストをBOに通知
  * トリガー設定：時間ベース → 毎日 9:00〜10:00
+ *
+ * 処理内容：
+ * 1. SCFG_CMS_ver1シートからインタビュー日（P列）を取得
+ * 2. 4営業日後 = 本日の顧客をリストアップ
+ * 3. マッチング待ちシートと照合してFP進捗を付加
+ * 4. n8nにWebhookで送信（n8nがLINEでBOに通知）
  */
 function dailyFollowUpCheck() {
-  const sheet = SpreadsheetApp.getActiveSpreadsheet()
-    .getSheetByName(CONFIG.SHEET_NAME);
-  const data = sheet.getDataRange().getValues();
+  const ss = SpreadsheetApp.openById('1AikGKgQH2UtB2Mv3A7NMhQqwH5IEvSD0s_Fu7CyMSlE');
+
+  // 顧客リストシートを取得
+  const customerSheet = ss.getSheetByName(CONFIG.CUSTOMER_SHEET_NAME);
+  const customerData = customerSheet.getDataRange().getValues();
+
+  // マッチング待ちシートを取得（FP進捗確認用）
+  const matchingSheet = ss.getSheetByName(CONFIG.MATCHING_SHEET_NAME);
+  const matchingData = matchingSheet.getDataRange().getValues();
 
   const today = new Date();
   const followUpList = [];
 
-  for (let i = 1; i < data.length; i++) {
-    const row = data[i];
-    const interviewDate = row[getInterviewDateCol()]; // インタビュー日列（要確認）
+  // 顧客リストをスキャン（2行目から）
+  for (let i = 1; i < customerData.length; i++) {
+    const row = customerData[i];
+    const hitmono_id = String(row[CONFIG.COL_HITOMONO_ID - 1]).trim();
+    const interviewDateRaw = row[CONFIG.COL_INTERVIEW_DATE - 1];
+    const interviewTimeRaw = row[CONFIG.COL_INTERVIEW_TIME - 1];
 
-    if (!interviewDate) continue;
+    if (!hitmono_id || !interviewDateRaw) continue;
+
+    // インタビュー日のパース
+    let interviewDate;
+    try {
+      interviewDate = new Date(interviewDateRaw);
+      if (isNaN(interviewDate.getTime())) continue;
+    } catch (e) {
+      continue;
+    }
 
     // 4営業日後を計算
-    const followUpDate = addBusinessDays(new Date(interviewDate), 4);
+    const followUpDate = addBusinessDays(interviewDate, CONFIG.FOLLOWUP_BUSINESS_DAYS);
 
-    if (isSameDay(followUpDate, today)) {
-      followUpList.push({
-        hitomono_id: row[CONFIG.COL_HITOMONO_ID - 1],
-        last_name: row[CONFIG.COL_LAST_NAME - 1],
-        first_name: row[CONFIG.COL_FIRST_NAME - 1],
-        last_name_kana: row[CONFIG.COL_LAST_KANA - 1],
-        first_name_kana: row[CONFIG.COL_FIRST_KANA - 1],
-        appointment_date: row[CONFIG.COL_APPOINTMENT - 1] || null,
-        row_number: i + 1,
-      });
-    }
-  }
+    if (!isSameDay(followUpDate, today)) continue;
 
-  if (followUpList.length > 0) {
-    sendToN8n({
-      event: 'daily_followup_list',
-      date: today.toISOString(),
-      count: followUpList.length,
-      list: followUpList,
+    // マッチング待ちシートからFP進捗を取得
+    const fpInfo = getFpInfo(matchingData, hitmono_id);
+
+    followUpList.push({
+      hitomono_id: hitmono_id,
+      interview_date: Utilities.formatDate(interviewDate, 'Asia/Tokyo', 'yyyy/MM/dd'),
+      interview_time: interviewTimeRaw || '',
+      fp_last_name: fpInfo.lastName,
+      fp_first_name: fpInfo.firstName,
+      fp_last_kana: fpInfo.lastKana,
+      fp_first_kana: fpInfo.firstKana,
+      fp_appointment_date: fpInfo.appointmentDate,
+      fp_status: fpInfo.status, // 'confirmed' / 'waiting' / 'not_contacted' / 'unknown'
+      row_number: i + 1,
     });
   }
+
+  if (followUpList.length === 0) {
+    Logger.log('本日の後確対象者なし');
+    return;
+  }
+
+  sendToN8n({
+    event: 'daily_followup_list',
+    date: Utilities.formatDate(today, 'Asia/Tokyo', 'yyyy/MM/dd'),
+    count: followUpList.length,
+    list: followUpList,
+  });
+
+  Logger.log(`後確リスト送信完了: ${followUpList.length}件`);
+}
+
+/**
+ * マッチング待ちシートからヒトモノ番号に対応するFP情報を取得
+ */
+function getFpInfo(matchingData, hitomono_id) {
+  for (let i = 1; i < matchingData.length; i++) {
+    const row = matchingData[i];
+    // ヒトモノ番号がどの列かはスプシ確認後に調整
+    // 暫定：A列（index 0）にIDが入っていると仮定
+    const rowId = String(row[0]).trim();
+    if (rowId !== hitomono_id) continue;
+
+    const lastName = row[CONFIG.COL_LAST_NAME - 1] || '';
+    const firstName = row[CONFIG.COL_FIRST_NAME - 1] || '';
+    const lastKana = row[CONFIG.COL_LAST_KANA - 1] || '';
+    const firstKana = row[CONFIG.COL_FIRST_KANA - 1] || '';
+    const appointmentDate = row[CONFIG.COL_APPOINTMENT - 1] || '';
+
+    let status = 'waiting';
+    if (appointmentDate) {
+      status = 'confirmed';
+    } else if (!lastName && !firstName) {
+      status = 'not_contacted';
+    }
+
+    return { lastName, firstName, lastKana, firstKana, appointmentDate, status };
+  }
+
+  return {
+    lastName: '', firstName: '', lastKana: '', firstKana: '',
+    appointmentDate: '', status: 'unknown'
+  };
 }
 
 /**
@@ -158,7 +235,5 @@ function sendToN8n(payload) {
   }
 }
 
-function getInterviewDateCol() {
-  // インタビュー実施日の列番号（スプシの列構成確定後に更新）
-  return 5; // 仮：E列
-}
+// ※ getInterviewDateCol()は不要になりました
+// P列（index 15）= CONFIG.COL_INTERVIEW_DATE - 1 を直接使用
