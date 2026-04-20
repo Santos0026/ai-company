@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BO後確ダッシュボード | ヒトモノチイキ</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, sans-serif; background: #f5f5f5; color: #333; }
+
+    .header {
+      background: #00B900;
+      color: white;
+      padding: 16px 20px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .date-badge {
+      background: rgba(255,255,255,0.2);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 14px;
+      display: inline-block;
+      margin-top: 4px;
+    }
+
+    .summary {
+      background: white;
+      margin: 16px;
+      padding: 16px;
+      border-radius: 12px;
+      display: flex;
+      gap: 16px;
+    }
+
+    .summary-item {
+      flex: 1;
+      text-align: center;
+    }
+
+    .summary-number {
+      font-size: 32px;
+      font-weight: bold;
+      color: #00B900;
+    }
+
+    .summary-label {
+      font-size: 12px;
+      color: #666;
+      margin-top: 4px;
+    }
+
+    .section-title {
+      margin: 0 16px 8px;
+      font-weight: bold;
+      font-size: 14px;
+      color: #666;
+    }
+
+    .customer-card {
+      background: white;
+      margin: 8px 16px;
+      border-radius: 12px;
+      padding: 16px;
+      border-left: 4px solid #00B900;
+    }
+
+    .customer-card.warning { border-left-color: #FF6B35; }
+    .customer-card.urgent { border-left-color: #E53935; }
+
+    .customer-name {
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .customer-id {
+      font-size: 12px;
+      color: #999;
+      margin-top: 2px;
+    }
+
+    .customer-info {
+      margin-top: 8px;
+      font-size: 14px;
+      color: #555;
+      background: #f9f9f9;
+      padding: 8px;
+      border-radius: 8px;
+    }
+
+    .fp-status {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: bold;
+      margin-top: 6px;
+    }
+
+    .fp-status.matched { background: #E8F5E9; color: #2E7D32; }
+    .fp-status.waiting { background: #FFF8E1; color: #F57F17; }
+    .fp-status.not-contacted { background: #FFEBEE; color: #C62828; }
+    .fp-status.confirmed { background: #E3F2FD; color: #1565C0; }
+
+    .action-buttons {
+      margin-top: 12px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .btn {
+      padding: 12px 8px;
+      border: none;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: bold;
+      cursor: pointer;
+      text-align: center;
+    }
+
+    .btn-confirmed { background: #00B900; color: white; grid-column: 1 / -1; }
+    .btn-undecided { background: #FFF8E1; color: #F57F17; border: 1px solid #FFE082; }
+    .btn-fp-none { background: #FFEBEE; color: #C62828; border: 1px solid #FFCDD2; }
+    .btn-mismatch { background: #EDE7F6; color: #4527A0; border: 1px solid #D1C4E9; }
+    .btn-misunderstand { background: #E8EAF6; color: #283593; border: 1px solid #C5CAE9; }
+
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 100;
+      align-items: flex-end;
+    }
+
+    .modal.open { display: flex; }
+
+    .modal-content {
+      background: white;
+      width: 100%;
+      border-radius: 20px 20px 0 0;
+      padding: 20px;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+
+    .modal-title {
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 12px;
+    }
+
+    .date-input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 16px;
+      margin-bottom: 12px;
+    }
+
+    .line-preview {
+      background: #f0f0f0;
+      border-radius: 8px;
+      padding: 12px;
+      font-size: 13px;
+      line-height: 1.6;
+      white-space: pre-wrap;
+      margin-bottom: 12px;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+
+    .btn-send {
+      width: 100%;
+      background: #00B900;
+      color: white;
+      padding: 14px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .btn-cancel {
+      width: 100%;
+      background: #f5f5f5;
+      color: #666;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      cursor: pointer;
+      margin-top: 8px;
+    }
+
+    .sent-badge {
+      background: #E8F5E9;
+      color: #2E7D32;
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: #999;
+    }
+
+    .empty-state-icon { font-size: 48px; margin-bottom: 12px; }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  BO後確ダッシュボード
+  <div class="date-badge" id="todayDate"></div>
+</div>
+
+<div class="summary">
+  <div class="summary-item">
+    <div class="summary-number" id="totalCount">-</div>
+    <div class="summary-label">本日の後確</div>
+  </div>
+  <div class="summary-item">
+    <div class="summary-number" id="doneCount" style="color:#1565C0">-</div>
+    <div class="summary-label">完了</div>
+  </div>
+  <div class="summary-item">
+    <div class="summary-number" id="remainCount" style="color:#E53935">-</div>
+    <div class="summary-label">残り</div>
+  </div>
+</div>
+
+<div class="section-title">📞 本日の後確リスト</div>
+<div id="customerList"></div>
+
+<!-- 結果入力モーダル -->
+<div class="modal" id="actionModal">
+  <div class="modal-content">
+    <div class="modal-title" id="modalTitle">電話結果を入力</div>
+
+    <div id="dateInputArea" style="display:none">
+      <label style="font-size:14px;color:#666;display:block;margin-bottom:6px">
+        面談確定日時
+      </label>
+      <input type="datetime-local" class="date-input" id="appointmentDateInput">
+    </div>
+
+    <div style="font-size:13px;color:#666;margin-bottom:6px">
+      送信されるLINEメッセージ（プレビュー）
+    </div>
+    <div class="line-preview" id="linePreview"></div>
+
+    <button class="btn-send" id="sendBtn" onclick="sendResult()">
+      LINEを送信してスプシを更新
+    </button>
+    <button class="btn-cancel" onclick="closeModal()">キャンセル</button>
+  </div>
+</div>
+
+<script>
+// 今日の日付表示
+const today = new Date();
+document.getElementById('todayDate').textContent =
+  today.toLocaleDateString('ja-JP', { year: 'numeric', month: 'long', day: 'numeric', weekday: 'short' });
+
+// 現在選択中の顧客と結果タイプ
+let currentCustomer = null;
+let currentResultType = null;
+
+// 顧客リスト（n8nから取得・ここではサンプル）
+// 実際はAPIから取得する
+const customers = [
+  {
+    id: 'A0185',
+    name: '山田 太郎',
+    kana: 'ヤマダ タロウ',
+    lineName: '山田太郎（美容室）',
+    fpStatus: 'waiting', // マッチング済み・連絡待ち
+    fpStatusLabel: 'マッチング済み・連絡待ち',
+    interviewDate: '2026-04-11',
+    sent: false,
+  },
+  {
+    id: 'A0186',
+    name: '佐藤 花子',
+    kana: 'サトウ ハナコ',
+    lineName: 'さとうはなこ🌸',
+    fpStatus: 'not-contacted', // FP未連絡
+    fpStatusLabel: 'FPより未連絡',
+    interviewDate: '2026-04-11',
+    sent: false,
+  },
+  {
+    id: 'A0187',
+    name: '鈴木 一郎',
+    kana: 'スズキ イチロウ',
+    lineName: '鈴木一郎ネイルサロン',
+    fpStatus: 'confirmed', // 日程確定済み
+    fpStatusLabel: '面談日: 4/25 14:00',
+    interviewDate: '2026-04-11',
+    sent: true,
+  },
+];
+
+function renderCustomers() {
+  const list = document.getElementById('customerList');
+  const total = customers.length;
+  const done = customers.filter(c => c.sent).length;
+
+  document.getElementById('totalCount').textContent = total;
+  document.getElementById('doneCount').textContent = done;
+  document.getElementById('remainCount').textContent = total - done;
+
+  if (total === 0) {
+    list.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-state-icon">✅</div>
+        <div>本日の後確はありません</div>
+      </div>`;
+    return;
+  }
+
+  list.innerHTML = customers.map((c, i) => `
+    <div class="customer-card ${c.fpStatus === 'not-contacted' ? 'warning' : ''}">
+      <div style="display:flex;justify-content:space-between;align-items:start">
+        <div>
+          <div class="customer-name">${c.name}</div>
+          <div class="customer-id">${c.id} / LINE: ${c.lineName}</div>
+        </div>
+        ${c.sent ? '<span class="sent-badge">✅ 送信済み</span>' : ''}
+      </div>
+      <div class="customer-info">
+        FP状況：<span class="fp-status ${c.fpStatus}">${c.fpStatusLabel}</span>
+      </div>
+      ${!c.sent ? `
+      <div class="action-buttons">
+        <button class="btn btn-confirmed" onclick="openModal(${i}, 'confirmed')">
+          ✅ 日程確定（日時を入力）
+        </button>
+        <button class="btn btn-undecided" onclick="openModal(${i}, 'undecided')">
+          📋 未定
+        </button>
+        <button class="btn btn-fp-none" onclick="openModal(${i}, 'fp_none')">
+          ❌ FP未連絡
+        </button>
+        <button class="btn btn-mismatch" onclick="openModal(${i}, 'mismatch')">
+          ⚠️ 名前不一致
+        </button>
+        <button class="btn btn-misunderstand" onclick="openModal(${i}, 'misunderstand')">
+          🔄 認識ズレ
+        </button>
+      </div>` : ''}
+    </div>
+  `).join('');
+}
+
+function getLinePreview(customer, resultType, appointmentDate) {
+  const name = customer.name;
+  switch (resultType) {
+    case 'confirmed':
+      return `お世話になっております！\nヒトモノチイキ事務局でございます😊\n\n先日は無料インタビューのお時間をいただきありがとうございました！\n\n${name}様の掲載記事は現在作成中でございます。\n完成しましたら改めてLINEよりご連絡いたします😊\n\nまた、実施アンケート（保険面談）の日程ですが、\n✅ ${appointmentDate || '○月○日 ○時'}\nにてご予約が確定しているとのこと、ありがとうございます！\n\n面談の注意事項をお送りします。\n...\n\n▼ 面談後のアンケートフォームはこちら\n[フォームURL]`;
+    case 'undecided':
+      return `お世話になっております！\nヒトモノチイキ事務局でございます😊\n\n先日は無料インタビューのお時間をいただきありがとうございました！\n\n${name}様の掲載記事は現在作成中でございます😊\n\n実施アンケートの日程につきましては、\nお手隙の際にご都合の良い日時が決まりましたら\nこちらのLINEにてご教示くださいますよう\nよろしくお願いいたします😊`;
+    case 'fp_none':
+      return `お世話になっております！\nヒトモノチイキ事務局でございます😊\n\n実施アンケートの担当者よりまだご連絡が届いていない可能性がございます。\n\n迷惑メールフォルダや着信履歴もご確認いただけますか？\n\n弊社からも本日中に担当者へ確認いたしまして、\n改めてLINEよりご連絡いたします😊`;
+    case 'mismatch':
+      return `お世話になっております！\nヒトモノチイキ事務局でございます😊\n\n一点確認させてください🙏\n\n実施アンケートのお申込みの際、\nお名前のご登録についてご確認させていただきたいのですが、\n\nご本人様またはご家族・ご関係者様のお名前で\nお申込みいただいておりますでしょうか？\n\n面談に参加される方のお名前を\nこちらのLINEにてご教示いただけますと幸いです😊`;
+    case 'misunderstand':
+      return `お世話になっております！\nヒトモノチイキ事務局でございます😊\n\n改めまして実施アンケートについてご説明いたします。\n\n【保険面談について】\n普通のお客様としてライフプランナーさんのお話を最後まで聞いていただくものです。\n\nご不明な点がございましたらお気軽にご連絡ください😊`;
+    default:
+      return '';
+  }
+}
+
+function openModal(customerIndex, resultType) {
+  currentCustomer = customers[customerIndex];
+  currentResultType = resultType;
+
+  const titleMap = {
+    confirmed: '✅ 日程確定 — LINEを送信',
+    undecided: '📋 未定 — LINEを送信',
+    fp_none: '❌ FP未連絡 — LINEを送信',
+    mismatch: '⚠️ 名前不一致 — LINEを送信',
+    misunderstand: '🔄 認識ズレ — LINEを送信',
+  };
+
+  document.getElementById('modalTitle').textContent = titleMap[resultType];
+
+  const dateArea = document.getElementById('dateInputArea');
+  dateArea.style.display = resultType === 'confirmed' ? 'block' : 'none';
+
+  document.getElementById('linePreview').textContent =
+    getLinePreview(currentCustomer, resultType, '');
+
+  document.getElementById('appointmentDateInput').addEventListener('input', (e) => {
+    const formatted = e.target.value.replace('T', ' ').slice(0, 16);
+    document.getElementById('linePreview').textContent =
+      getLinePreview(currentCustomer, resultType, formatted);
+  });
+
+  document.getElementById('actionModal').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('actionModal').classList.remove('open');
+  currentCustomer = null;
+  currentResultType = null;
+}
+
+async function sendResult() {
+  const btn = document.getElementById('sendBtn');
+  btn.textContent = '送信中...';
+  btn.disabled = true;
+
+  const appointmentDate = document.getElementById('appointmentDateInput').value;
+
+  // n8nのWebhookに結果を送信
+  const payload = {
+    event: 'call_result',
+    hitomono_id: currentCustomer.id,
+    customer_name: currentCustomer.name,
+    line_name: currentCustomer.lineName,
+    result_type: currentResultType,
+    appointment_date: currentResultType === 'confirmed' ? appointmentDate : null,
+    timestamp: new Date().toISOString(),
+  };
+
+  try {
+    // 実際のn8n WebhookにPOST
+    // await fetch('/api/send-result', { method: 'POST', body: JSON.stringify(payload) });
+
+    // デモ用：1秒待って成功とする
+    await new Promise(r => setTimeout(r, 1000));
+
+    // 成功時：送信済みに更新
+    const idx = customers.findIndex(c => c.id === currentCustomer.id);
+    if (idx !== -1) customers[idx].sent = true;
+
+    closeModal();
+    renderCustomers();
+  } catch (e) {
+    alert('送信エラーが発生しました。再試行してください。');
+  } finally {
+    btn.textContent = 'LINEを送信してスプシを更新';
+    btn.disabled = false;
+  }
+}
+
+renderCustomers();
+</script>
+</body>
+</html>
