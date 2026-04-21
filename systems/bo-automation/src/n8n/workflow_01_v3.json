@@ -1,0 +1,40 @@
+{
+  "name": "BO①v3：毎朝9時 後確リスト通知（白色のみ）",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "gas-followup",
+        "responseMode": "responseNode"
+      },
+      "name": "Webhook：GASから受信",
+      "type": "n8n-nodes-base.webhook",
+      "position": [250, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = $input.first().json;\nconst list = data.list || [];\nconst date = data.date || '';\nconst note = data.note || '';\nconst dashUrl = data.dashboard_url || '';\n\nif (list.length === 0) {\n  const msg = note\n    ? `📋 ${date}\\n${note}`\n    : `📋 ${date}\\n本日の後確対象者はいません✅`;\n  return [{ json: { message: msg, skip: true } }];\n}\n\nconst lines = [\n  `📋 本日の後確リスト`,\n  `${date}（${list.length}件）`,\n  `⬜ マッチング待ち → LINEで後追いしてください`,\n  '',\n];\n\nlist.forEach((c, i) => {\n  const name = c.customer_name || c.hitomono_id;\n  const kana = c.customer_kana ? `（${c.customer_kana}）` : '';\n  lines.push(`${i + 1}. ${c.hitomono_id} ${name}${kana}`);\n  lines.push(`   📅 インタビュー: ${c.interview_date} ${c.interview_time}`);\n});\n\nlines.push('');\nlines.push(`▼ 電話後はこちらで結果入力`);\nlines.push(dashUrl);\n\nreturn [{ json: { message: lines.join('\\n'), list, skip: false } }];"
+      },
+      "name": "通知メッセージ生成",
+      "type": "n8n-nodes-base.code",
+      "position": [450, 300]
+    },
+    {
+      "parameters": {
+        "authentication": "accessToken",
+        "resource": "message",
+        "operation": "push",
+        "to": "2009661765",
+        "messages": {
+          "values": [{ "type": "text", "text": "={{$json.message}}" }]
+        }
+      },
+      "name": "LINE：BOに通知",
+      "type": "n8n-nodes-base.line",
+      "position": [650, 300]
+    }
+  ],
+  "connections": {
+    "Webhook：GASから受信": { "main": [[{ "node": "通知メッセージ生成" }]] },
+    "通知メッセージ生成": { "main": [[{ "node": "LINE：BOに通知" }]] }
+  }
+}
