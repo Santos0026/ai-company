@@ -1,0 +1,44 @@
+{
+  "name": "BO①v2：毎朝9時 後確リスト通知（色ステータス対応）",
+  "description": "GASからの後確リストを受信し、FPスプシのR列の色に応じてBOへの通知内容を切り替える",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "gas-followup",
+        "responseMode": "responseNode"
+      },
+      "name": "Webhook：GASから受信",
+      "type": "n8n-nodes-base.webhook",
+      "position": [250, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = $input.first().json;\nconst list = data.list || [];\nconst date = data.date || '';\nconst dashUrl = data.dashboard_url || '';\n\nif (list.length === 0) {\n  return [{ json: { message: `📋 ${date}\\n本日の後確対象者はいません✅`, skip: true } }];\n}\n\n// 色別にグループ化\nconst white  = list.filter(c => c.fp_color_status === 'white');\nconst yellow = list.filter(c => c.fp_color_status === 'yellow');\nconst red    = list.filter(c => c.fp_color_status === 'red');\nconst green  = list.filter(c => c.fp_color_status === 'green');\n\nconst formatCustomer = (c) => {\n  const name = (c.fp_last_name + c.fp_first_name) || `${c.hitomono_id}（名前未照合）`;\n  return `  • ${c.hitomono_id} ${name}様`;\n};\n\nlet lines = [`📋 本日の後確リスト（${list.length}件）\\n${date}\\n`];\n\nif (white.length > 0) {\n  lines.push(`⬜ マッチング待ち（${white.length}件）\\n→ LINEで名前照合して後追い`);\n  lines.push(...white.map(formatCustomer));\n  lines.push('');\n}\nif (yellow.length > 0) {\n  lines.push(`🟡 マッチング完了（${yellow.length}件）\\n→ 面談日程を確認`);\n  lines.push(...yellow.map(formatCustomer));\n  lines.push('');\n}\nif (red.length > 0) {\n  lines.push(`🔴 面談意思なし（${red.length}件）\\n→ 対応確認が必要`);\n  lines.push(...red.map(formatCustomer));\n  lines.push('');\n}\nif (green.length > 0) {\n  lines.push(`🟢 意思確認が不安（${green.length}件）\\n→ 丁寧なフォロー`);\n  lines.push(...green.map(formatCustomer));\n  lines.push('');\n}\n\nlines.push(`▼ 電話後はこちらで結果入力\\n${dashUrl}`);\n\nconst message = lines.join('\\n');\nreturn [{ json: { message, list, skip: false } }];"
+      },
+      "name": "通知メッセージ生成（色別）",
+      "type": "n8n-nodes-base.code",
+      "position": [450, 300]
+    },
+    {
+      "parameters": {
+        "authentication": "accessToken",
+        "resource": "message",
+        "operation": "push",
+        "to": "2009661765",
+        "messages": {
+          "values": [{
+            "type": "text",
+            "text": "={{$json.message}}"
+          }]
+        }
+      },
+      "name": "LINE：BOに通知送信",
+      "type": "n8n-nodes-base.line",
+      "position": [650, 300]
+    }
+  ],
+  "connections": {
+    "Webhook：GASから受信": { "main": [[{ "node": "通知メッセージ生成（色別）" }]] },
+    "通知メッセージ生成（色別）": { "main": [[{ "node": "LINE：BOに通知送信" }]] }
+  }
+}
