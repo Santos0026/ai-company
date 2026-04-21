@@ -80,9 +80,9 @@ function dailyFollowUpCheck() {
 
   for (let i = 1; i < cmsData.length; i++) {
     const row = cmsData[i];
-    const hitmono_id = String(row[0]).trim();  // A列
-    const interviewDateRaw = row[15];           // P列（index 15）
-    const interviewTimeRaw = String(row[16] || '').trim(); // Q列
+    const hitmono_id = String(row[2]).trim();  // C列（index 2）：顧客ID
+    const interviewDateRaw = row[15];           // P列（index 15）：インタビュー日
+    const interviewTimeRaw = String(row[16] || '').trim(); // Q列（index 16）：インタビュー時間
 
     if (!hitmono_id || !interviewDateRaw) continue;
 
@@ -119,30 +119,50 @@ function dailyFollowUpCheck() {
   // R列のbackgroundcolorを取得（index 17 = R列）
   const fpBgColors = fpSheet.getRange(1, 18, fpRange.getNumRows(), 1).getBackgrounds();
 
-  // FPデータをヒトモノ番号でインデックス化
-  // ※FPスプシのどの列にヒトモノ番号があるかを確認して調整
-  // 暫定: A列（index 0）にヒトモノ番号
-  const fpIndex = {};
+  // FPデータを「姓フリガナ＋名フリガナ」でインデックス化
+  // ※FPスプシにヒトモノ番号がないため、名前（フリガナ）で照合する
+  // CMSの顧客名と照合する際はフリガナで突合
+  const fpIndex = {}; // key: "姓フリガナ名フリガナ"（スペースなし・大文字）
+  const fpIndexByName = {}; // key: "姓名"（漢字）でも引けるよう補完
+
   for (let i = 1; i < fpData.length; i++) {
-    const fpId = String(fpData[i][0]).trim();
-    if (!fpId) continue;
-    const lastName  = String(fpData[i][5] || '').trim(); // F列
-    const firstName = String(fpData[i][6] || '').trim(); // G列
-    const lastKana  = String(fpData[i][7] || '').trim(); // H列
-    const firstKana = String(fpData[i][8] || '').trim(); // I列
+    const lastName  = String(fpData[i][5] || '').trim(); // F列：姓
+    const firstName = String(fpData[i][6] || '').trim(); // G列：名
+    const lastKana  = String(fpData[i][7] || '').trim(); // H列：姓フリガナ
+    const firstKana = String(fpData[i][8] || '').trim(); // I列：名フリガナ
     const rColor    = fpBgColors[i][0];                  // R列の背景色
     const colorStatus = getColorStatus(rColor);
 
-    fpIndex[fpId] = {
+    if (!lastName && !firstName && !lastKana && !firstKana) continue;
+
+    const entry = {
       lastName, firstName, lastKana, firstKana,
       rColor, colorStatus,
       statusInfo: COLOR_STATUS_MAP[colorStatus.toUpperCase()] || COLOR_STATUS_MAP.WHITE
     };
+
+    // フリガナキーで登録
+    const kanaKey = (lastKana + firstKana).replace(/\s/g, '').toUpperCase();
+    if (kanaKey) fpIndex[kanaKey] = entry;
+
+    // 漢字キーでも登録
+    const nameKey = (lastName + firstName).replace(/\s/g, '');
+    if (nameKey) fpIndexByName[nameKey] = entry;
   }
 
   // ── 対象顧客にFP情報を付加 ──
+  // CMSの顧客名をFPスプシのフリガナ・漢字名で照合
   const followUpList = targets.map(t => {
-    const fp = fpIndex[t.hitomono_id] || {
+    // CMS側の顧客名を取得（D列 index 3）
+    const cmsRow = cmsData[t.cms_row - 1];
+    const cmsNameRaw = String(cmsRow[3] || '').trim(); // D列：顧客名
+    const cmsFuriganaRaw = String(cmsRow[4] || '').trim(); // E列：フリガナ
+
+    // フリガナで照合 → 漢字で照合の順で試みる
+    const kanaKey = cmsFuriganaRaw.replace(/\s/g, '').toUpperCase();
+    const nameKey = cmsNameRaw.replace(/\s/g, '');
+
+    const fp = fpIndex[kanaKey] || fpIndexByName[nameKey] || {
       lastName: '', firstName: '', lastKana: '', firstKana: '',
       colorStatus: 'white',
       statusInfo: COLOR_STATUS_MAP.WHITE
@@ -150,6 +170,8 @@ function dailyFollowUpCheck() {
 
     return {
       ...t,
+      cms_name: cmsNameRaw,
+      cms_furigana: cmsFuriganaRaw,
       fp_last_name:  fp.lastName,
       fp_first_name: fp.firstName,
       fp_last_kana:  fp.lastKana,
@@ -157,6 +179,7 @@ function dailyFollowUpCheck() {
       fp_color_status: fp.colorStatus,
       fp_status_label: fp.statusInfo.label,
       fp_bo_action:    fp.statusInfo.bo_action,
+      name_matched: !!(fpIndex[kanaKey] || fpIndexByName[nameKey]),
     };
   });
 
