@@ -78,8 +78,8 @@
 
 ## 現在のフォーカス
 
-> 会社の土台を作る段階。Jobsと共にビジョン・プロダクト・最初の顧客獲得戦略を定める。
+> **ヒトモノチイキ**運用フェーズ。ファネル・BO/n8n・LINE自動化の仕上げとスケール。詳細・数値・タスク一覧は `operations/HANDOFF_HITOMONOCHIIKI.md`。Jobsの最優先チェックリストは `org/executives/jobs/CURRENT_FOCUS.md`。
 
 ---
 
-*最終更新: 2026-04-21*
+*最終更新: 2026-04-22*
