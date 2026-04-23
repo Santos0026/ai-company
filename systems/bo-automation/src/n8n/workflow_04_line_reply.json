@@ -1,0 +1,114 @@
+{
+  "name": "BO④：顧客からのLINE返信を自動処理",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "line-webhook",
+        "responseMode": "responseNode"
+      },
+      "name": "LINE Webhook受信",
+      "type": "n8n-nodes-base.webhook",
+      "position": [250, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "const event = $input.first().json.events?.[0];\nif (!event || event.type !== 'message' || event.message.type !== 'text') {\n  return [{ json: { skip: true } }];\n}\nreturn [{ json: {\n  userId: event.source.userId,\n  replyToken: event.replyToken,\n  text: event.message.text,\n  timestamp: event.timestamp\n}}];"
+      },
+      "name": "LINEイベント解析",
+      "type": "n8n-nodes-base.code",
+      "position": [450, 300]
+    },
+    {
+      "parameters": {
+        "model": "claude-opus-4-5",
+        "messages": {
+          "values": [{
+            "role": "user",
+            "content": "以下のLINEメッセージを分類してください。返答はJSON形式のみ。\n\nメッセージ: {{$json.text}}\n\n分類カテゴリ:\n- appointment_date: 面談の日時が書かれている（例：「4月25日14時です」「来週月曜の午後」）\n- still_undecided: まだ決まっていないという返答\n- publication_inquiry: 掲載・記事の時期や状況を聞いている\n- general_question: その他の質問\n- other: 上記以外\n\n返答例: {\"category\": \"appointment_date\", \"extracted_date\": \"4月25日14時\", \"confidence\": 0.95}"
+          }]
+        },
+        "options": {}
+      },
+      "name": "Claude：メッセージ分類",
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "position": [650, 300]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            { "conditions": { "string": [{ "value1": "={{JSON.parse($json.text).category}}", "operation": "equals", "value2": "appointment_date" }] } },
+            { "conditions": { "string": [{ "value1": "={{JSON.parse($json.text).category}}", "operation": "equals", "value2": "still_undecided" }] } },
+            { "conditions": { "string": [{ "value1": "={{JSON.parse($json.text).category}}", "operation": "equals", "value2": "publication_inquiry" }] } }
+          ]
+        }
+      },
+      "name": "Switch：返信タイプで分岐",
+      "type": "n8n-nodes-base.switch",
+      "position": [850, 300]
+    },
+    {
+      "parameters": {
+        "authentication": "accessToken",
+        "resource": "message",
+        "operation": "reply",
+        "replyToken": "={{$json.replyToken}}",
+        "messages": {
+          "values": [{
+            "type": "text",
+            "text": "ありがとうございます😊\nご予約を承りました！\n当日もよろしくお願いいたします🙏\n\n面談終了後はこちらのアンケートフォームからご報告ください👇\nhttps://docs.google.com/forms/d/e/1FAIpQLSeaoLUoyxUKd2nbuUOszxK1H0h62_7DfwgLvrRIkFbe3cvzvg/viewform"
+          }]
+        }
+      },
+      "name": "LINE：日時確認返信",
+      "type": "n8n-nodes-base.line",
+      "position": [1050, 150]
+    },
+    {
+      "parameters": {
+        "authentication": "accessToken",
+        "resource": "message",
+        "operation": "reply",
+        "replyToken": "={{$json.replyToken}}",
+        "messages": {
+          "values": [{
+            "type": "text",
+            "text": "承知いたしました😊\n日程が決まりましたら、こちらのLINEにてご連絡ください🙏"
+          }]
+        }
+      },
+      "name": "LINE：未定返信",
+      "type": "n8n-nodes-base.line",
+      "position": [1050, 300]
+    },
+    {
+      "parameters": {
+        "authentication": "accessToken",
+        "resource": "message",
+        "operation": "reply",
+        "replyToken": "={{$json.replyToken}}",
+        "messages": {
+          "values": [{
+            "type": "text",
+            "text": "お問い合わせありがとうございます😊\n現在記事を作成中でございます！\n完成しましたらこちらのLINEにてご連絡いたしますので、もうしばらくお待ちください🙏"
+          }]
+        }
+      },
+      "name": "LINE：掲載問い合わせ返信",
+      "type": "n8n-nodes-base.line",
+      "position": [1050, 450]
+    }
+  ],
+  "connections": {
+    "LINE Webhook受信": { "main": [[{ "node": "LINEイベント解析" }]] },
+    "LINEイベント解析": { "main": [[{ "node": "Claude：メッセージ分類" }]] },
+    "Claude：メッセージ分類": { "main": [[{ "node": "Switch：返信タイプで分岐" }]] },
+    "Switch：返信タイプで分岐": {
+      "main": [
+        [{ "node": "LINE：日時確認返信" }],
+        [{ "node": "LINE：未定返信" }],
+        [{ "node": "LINE：掲載問い合わせ返信" }]
+      ]
+    }
+  }
+}
