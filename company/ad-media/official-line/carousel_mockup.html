@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ガクチカ協賛 案件カルーセル モックアップ</title>
+<style>
+  :root{ --orange:#F57C20; --orange-d:#E06A10; --yellow:#FFC93C; --line-bg:#8CABD9; }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  body{ font-family:-apple-system,"Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;
+        background:#e9eef4; color:#222; display:flex; justify-content:center; padding:24px 0; }
+  .phone{ width:390px; max-width:100%; background:var(--line-bg); min-height:760px;
+          border-radius:28px; overflow:hidden; box-shadow:0 12px 40px rgba(0,0,0,.25); }
+  .bar{ background:#6f92c4; color:#fff; padding:12px 16px; font-weight:700; font-size:15px;
+        display:flex; align-items:center; gap:8px; }
+  .bar .status{ font-size:11px; font-weight:400; opacity:.9; }
+  .talk{ padding:16px 12px 28px; }
+  .bubble{ background:#fff; border-radius:16px; padding:12px 14px; font-size:14px; line-height:1.7;
+           max-width:80%; margin-bottom:14px; box-shadow:0 1px 2px rgba(0,0,0,.08); }
+  .lbl{ font-size:11px; color:#33507a; margin:0 0 4px 4px; font-weight:700; }
+  /* carousel */
+  .carousel{ display:flex; gap:10px; overflow-x:auto; padding:2px 4px 12px; scroll-snap-type:x mandatory; }
+  .carousel::-webkit-scrollbar{ height:6px; } .carousel::-webkit-scrollbar-thumb{ background:#ffffff88; border-radius:3px; }
+  .card{ flex:0 0 240px; scroll-snap-align:start; background:#fff; border-radius:16px; overflow:hidden;
+         box-shadow:0 2px 6px rgba(0,0,0,.15); }
+  .img{ position:relative; height:158px; background:linear-gradient(135deg,#ffd9a8,#ffb066);
+        display:flex; align-items:center; justify-content:center; }
+  .img .scene{ font-size:52px; }
+  .img .note{ position:absolute; bottom:8px; left:8px; right:8px; font-size:10px; color:#7a4a10;
+              background:#ffffffcc; border-radius:8px; padding:4px 6px; line-height:1.4; }
+  .badge{ position:absolute; top:8px; right:8px; background:var(--yellow); color:#5a3d00;
+          font-weight:800; font-size:13px; padding:5px 10px; border-radius:20px; box-shadow:0 2px 4px rgba(0,0,0,.15); }
+  .logo{ position:absolute; top:8px; left:8px; background:#fff; color:var(--orange); font-weight:800;
+         font-size:10px; padding:3px 7px; border-radius:20px; }
+  .body{ padding:11px 12px 14px; }
+  .title{ font-weight:800; font-size:15px; margin-bottom:6px; }
+  .desc{ font-size:12px; color:#444; line-height:1.6; margin-bottom:11px; min-height:56px; }
+  .desc b{ color:var(--orange-d); }
+  .btn{ display:block; text-align:center; background:var(--orange); color:#fff; font-weight:700;
+        font-size:13px; padding:9px; border-radius:10px; margin-top:6px; }
+  .btn.ghost{ background:#fff; color:var(--orange); border:1.5px solid var(--orange); }
+  .card.soon .img{ background:linear-gradient(135deg,#eaeaea,#cfcfcf); }
+  .card.soon .badge{ background:#bbb; color:#fff; }
+  .card.more{ flex:0 0 150px; display:flex; align-items:center; justify-content:center; background:#fff; }
+  .card.more .inner{ text-align:center; color:var(--orange); font-weight:800; font-size:14px; }
+  .hint{ text-align:center; font-size:11px; color:#33507a; margin-top:2px; }
+</style>
+</head>
+<body>
+  <div class="phone">
+    <div class="bar">🎓 ガクチカ協賛 <span class="status">自動で返信しています</span></div>
+    <div class="talk">
+      <div class="lbl">ガクチカ協賛</div>
+      <div class="bubble">登録完了ありがとう🎉<br>これでキミにピッタリの案件が届くよ😊<br>さっそく今おすすめの案件を見てみよう👇</div>
+
+      <div class="lbl">案件一覧（右→左にスワイプ）</div>
+      <div class="carousel">
+
+        <!-- C001 hero -->
+        <div class="card">
+          <div class="img">
+            <span class="logo">🎓 ガクチカ協賛</span>
+            <span class="badge">最大20,000円</span>
+            <span class="scene">💻🧑‍🎓</span>
+            <span class="note">【画像】学生が自宅で笑顔でオンライン面談しているリアルな写真/イラスト</span>
+          </div>
+          <div class="body">
+            <div class="title">🎯 就活オンライン面談</div>
+            <div class="desc">オンラインで話すだけ！<br><b>1件5,000円 × 4件 = 最大20,000円</b>💰<br>就活の"ガクチカ"にもなる🎓</div>
+            <a class="btn">応募する</a>
+            <a class="btn ghost">くわしく見る</a>
+          </div>
+        </div>
+
+        <!-- coming soon cards -->
+        <div class="card soon">
+          <div class="img"><span class="badge">5,000円〜</span><span class="scene">📝</span>
+            <span class="note">【画像】スマホでアンケートに答える学生</span></div>
+          <div class="body"><div class="title">📝 アンケート回答</div>
+            <div class="desc">所要10分・スキマ時間でOK<br><b>単価5,000円〜</b><br>※案件が入り次第お届け</div>
+            <a class="btn ghost">近日公開</a></div>
+        </div>
+
+        <div class="card soon">
+          <div class="img"><span class="badge">対面/online</span><span class="scene">🎤</span>
+            <span class="note">【画像】カフェで和やかにインタビューされる学生</span></div>
+          <div class="body"><div class="title">🎤 インタビュー参加</div>
+            <div class="desc">お話するだけでOK<br>対面・オンライン選べる<br>※案件が入り次第お届け</div>
+            <a class="btn ghost">近日公開</a></div>
+        </div>
+
+        <div class="card soon">
+          <div class="img"><span class="badge">数日でOK</span><span class="scene">📱</span>
+            <span class="note">【画像】アプリを触る学生の手元</span></div>
+          <div class="body"><div class="title">📱 アプリモニター</div>
+            <div class="desc">数日間つかうだけ<br>新歓費用にも使える🍀<br>※案件が入り次第お届け</div>
+            <a class="btn ghost">近日公開</a></div>
+        </div>
+
+        <div class="card more"><div class="inner">🔍<br>案件をもっと見る</div></div>
+      </div>
+      <div class="hint">← カードを横にスワイプできます →</div>
+    </div>
+  </div>
+</body>
+</html>
