@@ -98,15 +98,14 @@ at a bright desk, clean modern setting, soft natural light, positive mood, copy 
 
 ---
 
-## トラブルシュート：画像に文字/ロゴが入ってしまう場合
-AI画像は勝手にそれっぽい英字（例：別ブランド名）を入れることがある。**必ず除去する**。
-- Midjourney：プロンプト末尾に `--no text, words, letters, logo, watermark, banner`
-- DALL·E / Canva：「**画像内に文字・ロゴ・透かしを一切入れないこと**」と日本語で明記
-- それでも入る場合：Canvaでその部分をトリミング → 自前の「🎓ガクチカ協賛」ピル/帯で上書き
-- 画像に他社ブランド名が写ったものは**絶対に使わない**
+## 案件ブランドの扱い（重要）
+- **「JobPassport（ジョブパス）」は C001 の正式サービス名（提携案件先）**。画像に入れてOK・むしろ正しい。
+- 除去が必要なのは、**案件と無関係な文字・透かし**が勝手に入った場合のみ。
+  - Midjourney：末尾に `--no watermark, random gibberish text`
+  - Canva：不要な文字だけトリミング/上書き
 
 ## 割り当てメモ（生成済み素材）
-- ノートPCで面談する学生 → **C001 就活オンライン面談**（laptop=ビデオ面談に最適）
+- ノートPCで面談する学生（JobPassport表記あり）→ **C001 就活オンライン面談＝JobPassport案件** ✅
 - スマホを操作する学生 → **アプリモニター / アンケート**（smartphone操作）
 
 ## コンプラ（Mio観点・画像でも守る）
