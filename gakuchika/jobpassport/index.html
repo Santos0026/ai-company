@@ -13,6 +13,8 @@
   }
   *{ box-sizing:border-box; margin:0; padding:0; -webkit-text-size-adjust:100%; }
   html,body{ max-width:100%; overflow-x:hidden; }
+  .wrap *{ min-width:0; }
+  .wrap h1,.wrap p,.wrap .title,.wrap .big{ overflow-wrap:anywhere; word-break:break-word; }
   html{ scroll-behavior:smooth; }
   body{ font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;
         color:var(--ink); background:var(--bg); line-height:1.75; -webkit-font-smoothing:antialiased; }
@@ -45,7 +47,7 @@
   .hero .heroimg{ margin-top:20px; border-radius:16px; box-shadow:0 14px 30px #00000040; min-height:180px; }
 
   /* stats */
-  .stats{ display:grid; grid-template-columns:repeat(3,1fr); background:var(--navy); color:#fff; }
+  .stats{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); background:var(--navy); color:#fff; }
   .stats div{ text-align:center; padding:16px 6px; border-right:1px solid #ffffff1a; }
   .stats div:last-child{ border-right:none; }
   .stats b{ display:block; font-size:23px; font-weight:900; color:var(--gold); line-height:1.1; }
@@ -65,7 +67,7 @@
 
   /* steps timeline */
   .steps{ position:relative; padding-left:8px; }
-  .step{ display:grid; grid-template-columns:44px 1fr; gap:14px; margin-bottom:22px; position:relative; }
+  .step{ display:grid; grid-template-columns:44px minmax(0,1fr); gap:14px; margin-bottom:22px; position:relative; }
   .step:last-child{ margin-bottom:0; }
   .step .num{ width:44px; height:44px; border-radius:50%; background:var(--navy); color:#fff;
     font-weight:900; font-size:17px; display:flex; align-items:center; justify-content:center; z-index:1; }
