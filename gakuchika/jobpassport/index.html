@@ -2,136 +2,193 @@
 <html lang="ja">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>就活オンライン面談モニター（JobPassport）｜ガクチカ協賛</title>
-<meta name="description" content="オンラインで面談を受けるだけ。就活の練習になって協賛金（最大20,000円）ももらえる、学生向けモニター案件です。">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>就活オンライン面談モニター｜ガクチカ協賛 × JobPassport</title>
+<meta name="description" content="企業の面談に参加するだけ。就活の準備をしながら協賛金（最大20,000円）も手に入る、学生向けモニター案件です。">
 <style>
   :root{
-    --orange:#F57C20; --orange-d:#E0670F; --yellow:#FFD35A; --navy:#20386b;
-    --ink:#2b2b2b; --muted:#70737a; --bg:#fff8f1; --card:#fff; --line:#f0e2d1;
+    --navy:#16264A; --navy-2:#233c6e; --blue:#2f6df0;
+    --orange:#F57C20; --orange-d:#E0670F; --gold:#FFC24B;
+    --ink:#1d2330; --muted:#6a7183; --line:#e9edf4; --bg:#f4f6fb; --card:#fff;
   }
-  *{ box-sizing:border-box; margin:0; padding:0; }
+  *{ box-sizing:border-box; margin:0; padding:0; -webkit-text-size-adjust:100%; }
+  html,body{ max-width:100%; overflow-x:hidden; }
   html{ scroll-behavior:smooth; }
   body{ font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;
-        color:var(--ink); background:var(--bg); line-height:1.8; -webkit-font-smoothing:antialiased; }
-  .wrap{ max-width:480px; margin:0 auto; background:var(--bg); min-height:100vh; overflow:hidden; }
-  img{ max-width:100%; display:block; }
-  .pad{ padding:0 20px; }
+        color:var(--ink); background:var(--bg); line-height:1.75; -webkit-font-smoothing:antialiased; }
+  .wrap{ width:100%; max-width:500px; margin:0 auto; background:#fff; }
+  img{ max-width:100%; height:auto; display:block; }
+  .pad{ padding-left:22px; padding-right:22px; }
+
+  /* photo helper (差し込み枠) */
+  .photo{ position:relative; width:100%; background:linear-gradient(135deg,#d9e2f2,#c3d0e8); overflow:hidden; }
+  .photo img{ width:100%; height:100%; object-fit:cover; position:absolute; inset:0; }
+  .photo .hint{ position:relative; z-index:1; display:flex; align-items:center; justify-content:center;
+    text-align:center; color:#5f6d8a; font-size:12px; font-weight:700; padding:14px; min-height:inherit; }
+  .r-169{ aspect-ratio:16/9; } .r-43{ aspect-ratio:4/3; } .r-11{ aspect-ratio:1/1; }
+
+  /* brand bar */
+  .brandbar{ background:#fff; border-bottom:1px solid var(--line); display:flex; align-items:center;
+    justify-content:center; gap:9px; height:48px; font-size:12.5px; font-weight:800; color:var(--navy); letter-spacing:.02em; }
+  .brandbar .x{ color:#c3ccdb; font-weight:600; }
+  .brandbar .o{ color:var(--orange); }
 
   /* hero */
-  .hero{ background:linear-gradient(160deg,#FFB25A,var(--orange-d)); color:#fff; padding:26px 20px 30px; text-align:center; position:relative; }
-  .hero .brandrow{ display:flex; align-items:center; justify-content:center; gap:6px; font-size:12px; font-weight:800; opacity:.95; margin-bottom:12px; }
-  .badge{ display:inline-block; background:var(--yellow); color:#5a3d00; font-weight:900; font-size:15px;
-          padding:7px 18px; border-radius:100px; margin-bottom:12px; box-shadow:0 4px 10px rgba(0,0,0,.15); }
-  .hero h1{ font-size:26px; font-weight:900; line-height:1.4; }
-  .hero h1 .y{ color:var(--yellow); }
-  .hero p{ font-size:14px; margin-top:10px; opacity:.97; }
-  .heroimg{ margin:18px auto 0; border-radius:16px; overflow:hidden; border:3px solid #ffffff55; }
-  .heroimg .ph{ background:#ffe9d2; color:#c98a48; height:170px; display:flex; align-items:center; justify-content:center;
-                font-size:13px; text-align:center; padding:12px; }
+  .hero{ position:relative; background:linear-gradient(150deg,#1b2f5c 0%, #16264A 60%, #101b36 100%); color:#fff; padding:34px 22px 30px; }
+  .hero::after{ content:""; position:absolute; inset:0; background:radial-gradient(120% 80% at 100% 0%, #2f6df033, transparent 60%); }
+  .hero > *{ position:relative; z-index:1; }
+  .hero .chip{ display:inline-block; background:linear-gradient(90deg,var(--gold),#ffb01f); color:#5a3d00;
+    font-weight:900; font-size:13px; padding:7px 16px; border-radius:100px; margin-bottom:16px; }
+  .hero h1{ font-size:31px; font-weight:900; line-height:1.35; letter-spacing:.01em; }
+  .hero h1 .u{ background:linear-gradient(transparent 62%, #2f6df0aa 62%); }
+  .hero p{ font-size:14px; margin-top:14px; color:#c8d3ea; }
+  .hero .heroimg{ margin-top:20px; border-radius:16px; box-shadow:0 14px 30px #00000040; min-height:180px; }
 
-  section{ padding:34px 0; }
-  .kicker{ text-align:center; color:var(--orange-d); font-weight:900; font-size:12px; letter-spacing:.1em; }
-  .h2{ text-align:center; font-size:21px; font-weight:900; margin:4px 0 20px; }
+  /* stats */
+  .stats{ display:grid; grid-template-columns:repeat(3,1fr); background:var(--navy); color:#fff; }
+  .stats div{ text-align:center; padding:16px 6px; border-right:1px solid #ffffff1a; }
+  .stats div:last-child{ border-right:none; }
+  .stats b{ display:block; font-size:23px; font-weight:900; color:var(--gold); line-height:1.1; }
+  .stats span{ font-size:10.5px; color:#b9c4dc; letter-spacing:.02em; }
 
-  /* fit list */
-  .fit{ display:flex; flex-direction:column; gap:10px; }
-  .fit .row{ background:var(--card); border:1px solid var(--line); border-radius:14px; padding:14px 16px;
-             display:flex; gap:12px; align-items:center; font-weight:700; font-size:14.5px; }
-  .fit .row .e{ font-size:24px; }
+  section{ padding:38px 0; }
+  .eyebrow{ text-align:center; color:var(--orange-d); font-weight:900; font-size:11px; letter-spacing:.18em; }
+  .title{ text-align:center; font-size:22px; font-weight:900; margin:6px 0 22px; line-height:1.4; }
+  .title .o{ color:var(--orange); }
 
-  /* steps */
-  .steps{ display:flex; flex-direction:column; gap:0; position:relative; }
-  .step{ background:var(--card); border:1px solid var(--line); border-radius:16px; padding:18px; margin-bottom:14px; position:relative; }
-  .step .no{ position:absolute; top:-10px; left:16px; background:var(--orange); color:#fff; font-weight:900;
-             font-size:12px; padding:3px 12px; border-radius:100px; }
-  .step h3{ font-size:16px; margin:8px 0 4px; }
+  /* for-you */
+  .fit{ display:flex; flex-direction:column; gap:11px; }
+  .fit .row{ background:var(--card); border:1px solid var(--line); border-radius:14px; padding:16px;
+    display:flex; gap:13px; align-items:center; font-weight:700; font-size:14.5px; box-shadow:0 3px 10px #16264a0a; }
+  .fit .n{ flex:0 0 30px; height:30px; border-radius:9px; background:#fff1e4; color:var(--orange-d);
+    font-weight:900; display:flex; align-items:center; justify-content:center; font-size:15px; }
+
+  /* steps timeline */
+  .steps{ position:relative; padding-left:8px; }
+  .step{ display:grid; grid-template-columns:44px 1fr; gap:14px; margin-bottom:22px; position:relative; }
+  .step:last-child{ margin-bottom:0; }
+  .step .num{ width:44px; height:44px; border-radius:50%; background:var(--navy); color:#fff;
+    font-weight:900; font-size:17px; display:flex; align-items:center; justify-content:center; z-index:1; }
+  .step:not(:last-child)::before{ content:""; position:absolute; left:21px; top:44px; bottom:-22px; width:2px; background:#d9e0ee; }
+  .step h3{ font-size:16.5px; margin:9px 0 4px; }
   .step p{ font-size:13px; color:var(--muted); }
-  .step .e{ font-size:30px; float:right; margin-left:10px; }
-  .arrow{ text-align:center; color:var(--orange); font-size:20px; margin:-6px 0 8px; }
+  .step .code{ display:inline-block; margin-top:6px; background:#fff1e4; color:var(--orange-d);
+    font-weight:800; font-size:12px; padding:3px 10px; border-radius:6px; }
 
   /* reward */
-  .reward{ background:linear-gradient(160deg,#fff,#fff3e4); border:2px solid var(--yellow); border-radius:18px; padding:22px; text-align:center; }
-  .reward .big{ font-size:30px; font-weight:900; color:var(--orange-d); }
-  .reward .big small{ font-size:15px; }
-  .reward .sub{ font-size:12.5px; color:var(--muted); margin-top:4px; }
-  .reward ul{ list-style:none; margin-top:16px; text-align:left; display:flex; flex-direction:column; gap:8px; }
-  .reward li{ font-size:14px; font-weight:700; padding-left:26px; position:relative; }
-  .reward li::before{ content:"✓"; position:absolute; left:0; color:#1aa54a; font-weight:900; }
+  .reward{ background:linear-gradient(160deg,#fff,#fff4e7); border:2px solid var(--gold); border-radius:20px; padding:24px; text-align:center; box-shadow:0 10px 26px #f57c2015; }
+  .reward .lead{ font-size:13px; color:var(--muted); font-weight:700; }
+  .reward .big{ font-size:34px; font-weight:900; color:var(--orange-d); line-height:1.2; margin:2px 0 2px; }
+  .reward .big small{ font-size:14px; color:var(--ink); }
+  .reward .note{ font-size:11.5px; color:var(--muted); }
+  .reward ul{ list-style:none; margin-top:18px; text-align:left; display:flex; flex-direction:column; gap:9px; }
+  .reward li{ font-size:14px; font-weight:700; padding-left:28px; position:relative; }
+  .reward li::before{ content:""; position:absolute; left:2px; top:8px; width:15px; height:8px;
+    border-left:3px solid #1aa54a; border-bottom:3px solid #1aa54a; transform:rotate(-45deg); }
+
+  /* voice */
+  .voice{ background:var(--card); border:1px solid var(--line); border-radius:16px; padding:18px; box-shadow:0 3px 10px #16264a0a; }
+  .voice .top{ display:flex; align-items:center; gap:12px; margin-bottom:10px; }
+  .voice .av{ width:44px; height:44px; border-radius:50%; background:#dbe4f5; flex:0 0 44px; overflow:hidden; }
+  .voice .av img{ width:100%; height:100%; object-fit:cover; }
+  .voice .who{ font-size:12.5px; color:var(--muted); font-weight:700; }
+  .voice .stars{ color:var(--gold); font-size:13px; letter-spacing:2px; }
+  .voice p{ font-size:13.5px; }
 
   /* safe */
-  .safe{ background:var(--card); border:1px solid var(--line); border-radius:16px; padding:18px; }
-  .safe .row{ display:flex; gap:10px; align-items:flex-start; font-size:13.5px; margin-bottom:10px; }
-  .safe .row:last-child{ margin-bottom:0; }
-  .safe .e{ font-size:18px; }
+  .safe{ display:flex; flex-direction:column; gap:12px; }
+  .safe .row{ background:var(--card); border:1px solid var(--line); border-radius:14px; padding:15px 16px; font-size:13.5px; font-weight:600; box-shadow:0 3px 10px #16264a0a; }
+  .safe .row b{ color:var(--navy); }
 
   /* faq */
-  .faq details{ background:var(--card); border:1px solid var(--line); border-radius:12px; padding:2px 14px; margin-bottom:9px; }
-  .faq summary{ cursor:pointer; font-weight:700; padding:11px 0; list-style:none; font-size:14px; }
+  .faq details{ background:var(--card); border:1px solid var(--line); border-radius:12px; padding:2px 16px; margin-bottom:10px; box-shadow:0 3px 10px #16264a08; }
+  .faq summary{ cursor:pointer; font-weight:800; padding:13px 0; list-style:none; font-size:14px; color:var(--ink); }
   .faq summary::-webkit-details-marker{ display:none; }
-  .faq summary::before{ content:"Q. "; color:var(--orange); font-weight:900; }
-  .faq p{ padding:0 0 12px; color:var(--muted); font-size:13px; }
+  .faq summary::before{ content:"Q"; display:inline-flex; width:22px; height:22px; margin-right:9px; border-radius:6px;
+    background:var(--navy); color:#fff; font-size:12px; align-items:center; justify-content:center; vertical-align:middle; }
+  .faq p{ padding:0 0 14px 31px; color:var(--muted); font-size:13px; }
 
   /* cta */
-  .ctaband{ background:linear-gradient(160deg,var(--orange),var(--orange-d)); color:#fff; text-align:center; padding:32px 20px 36px; }
-  .ctaband h2{ font-size:20px; margin-bottom:6px; }
-  .ctaband p{ font-size:13px; opacity:.95; margin-bottom:18px; }
-  .btn{ display:block; background:#fff; color:var(--orange-d); font-weight:900; font-size:18px; text-decoration:none;
-        padding:16px; border-radius:100px; box-shadow:0 8px 18px rgba(0,0,0,.2); }
-  .note{ font-size:11px; opacity:.9; margin-top:14px; line-height:1.7; }
-  footer{ text-align:center; font-size:11px; color:var(--muted); padding:20px; }
+  .cta{ background:linear-gradient(150deg,#1b2f5c,#101b36); color:#fff; text-align:center; padding:40px 22px; }
+  .cta h2{ font-size:22px; font-weight:900; margin-bottom:8px; }
+  .cta p{ font-size:13px; color:#c8d3ea; margin-bottom:22px; }
+  .cta a.btn{ display:block; background:linear-gradient(90deg,var(--orange),#ff9330); color:#fff; font-weight:900;
+    font-size:18px; text-decoration:none; padding:17px; border-radius:100px; box-shadow:0 12px 24px #f57c2055; }
+  .cta .fine{ font-size:11px; color:#9aa8c6; margin-top:16px; line-height:1.7; }
 
-  .sticky{ position:sticky; bottom:0; background:#fffffff2; backdrop-filter:blur(6px); border-top:1px solid var(--line);
-           padding:10px 16px; }
-  .sticky a{ display:block; background:var(--orange); color:#fff; font-weight:900; text-decoration:none; text-align:center;
-             padding:14px; border-radius:100px; font-size:16px; }
+  footer{ background:var(--orange); color:#fff; text-align:center; padding:22px; font-size:12px; font-weight:700; }
+
+  .sticky{ position:sticky; bottom:0; z-index:20; background:#ffffffee; backdrop-filter:blur(8px);
+    border-top:1px solid var(--line); padding:10px 16px calc(10px + env(safe-area-inset-bottom)); }
+  .sticky a{ display:block; background:linear-gradient(90deg,var(--orange),#ff9330); color:#fff; font-weight:900;
+    text-align:center; text-decoration:none; padding:15px; border-radius:100px; font-size:16px; box-shadow:0 8px 18px #f57c2044; }
 </style>
 </head>
 <body>
 <div class="wrap">
 
+  <div class="brandbar"><span class="o">🎓 ガクチカ協賛</span><span class="x">×</span><span>🌏 JobPassport</span></div>
+
   <!-- HERO -->
   <div class="hero">
-    <div class="brandrow">🎓 ガクチカ協賛 <span style="opacity:.6">×</span> 🌏 JobPassport</div>
-    <span class="badge">協賛金 最大20,000円</span>
-    <h1>就活オンライン面談<br>モニター<span class="y"></span></h1>
-    <p>オンラインで話すだけ。就活の練習になって、協賛金ももらえる。</p>
-    <div class="heroimg">
-      <div class="ph">［ここに面談中の写真（生成済みのリアル画像）を入れる］</div>
+    <span class="chip">協賛金 最大 20,000円</span>
+    <h1>あなたの1時間に、<br><span class="u">価値がつく。</span></h1>
+    <p>企業の面談に参加するだけ。就活の準備をしながら、活動費も手に入る。</p>
+    <div class="photo r-169 heroimg"><!-- assets/hero.jpg -->
+      <img src="assets/hero.jpg" alt="" onerror="this.style.display='none'">
+      <div class="hint">［hero.jpg：JobPassportメインビジュアル<br>「あなたの1時間に、価値がつく」の画像］</div>
     </div>
   </div>
 
-  <!-- こんな人に -->
+  <!-- STATS -->
+  <div class="stats">
+    <div><b>200<span style="font-size:12px">大学</span></b><span>提携大学</span></div>
+    <div><b>1500<span style="font-size:12px">団体</span></b><span>提携学生団体</span></div>
+    <div><b>600<span style="font-size:12px">人</span></b><span>利用者突破</span></div>
+  </div>
+
+  <!-- FOR YOU -->
   <section class="pad">
-    <div class="kicker">FOR YOU</div>
-    <div class="h2">こんな学生におすすめ</div>
+    <div class="eyebrow">FOR YOU</div>
+    <div class="title">こんな学生に<span class="o">おすすめ</span></div>
     <div class="fit">
-      <div class="row"><span class="e">🎯</span>就活をこれから始めたい・練習したい</div>
-      <div class="row"><span class="e">🎓</span>「ガクチカ」として話せる経験がほしい</div>
-      <div class="row"><span class="e">💰</span>スキマ時間で協賛金ももらいたい</div>
+      <div class="row"><span class="n">1</span>就活をこれから始めたい・面接に慣れたい</div>
+      <div class="row"><span class="n">2</span>「ガクチカ」として話せる経験がほしい</div>
+      <div class="row"><span class="n">3</span>スキマ時間で活動費（協賛金）も得たい</div>
     </div>
   </section>
 
-  <!-- 3ステップ -->
-  <section class="pad" style="background:#fff3e4;">
-    <div class="kicker">HOW IT WORKS</div>
-    <div class="h2">参加はかんたん3ステップ</div>
+  <!-- PHOTO BAND 1 -->
+  <div class="photo r-43"><!-- assets/photo1.jpg -->
+    <img src="assets/photo1.jpg" alt="" onerror="this.style.display='none'">
+    <div class="hint" style="min-height:230px">［photo1.jpg：女性がPCでオンライン面談している写真］</div>
+  </div>
+
+  <!-- STEPS -->
+  <section class="pad" style="background:#f4f6fb;">
+    <div class="eyebrow">HOW IT WORKS</div>
+    <div class="title">参加はかんたん<span class="o">3ステップ</span></div>
     <div class="steps">
-      <div class="step"><span class="no">STEP 1</span><span class="e">📝</span><h3>かんたん登録（30秒）</h3><p>JobPassportに登録して、プロフィールを入力するだけ。※プロモーションコード「a-0010」を入力してね。</p></div>
-      <div class="arrow">▼</div>
-      <div class="step"><span class="no">STEP 2</span><span class="e">📞</span><h3>面談を予約（スタッフがサポート）</h3><p>後日お電話で、面談の予約を一緒に進めます。初めてでも安心。</p></div>
-      <div class="arrow">▼</div>
-      <div class="step"><span class="no">STEP 3</span><span class="e">💻</span><h3>オンライン面談を受ける</h3><p>届いたZoomリンクから面談に参加。話すだけでOK。完了で協賛金の対象に。</p></div>
+      <div class="step"><div class="num">1</div><div><h3>かんたん登録（30秒）</h3><p>JobPassportに登録して、プロフィールを入力するだけ。</p><span class="code">プロモコード：a-0010</span></div></div>
+      <div class="step"><div class="num">2</div><div><h3>面談を予約（スタッフがサポート）</h3><p>後日お電話で、面談の予約を一緒に進めます。初めてでも安心です。</p></div></div>
+      <div class="step"><div class="num">3</div><div><h3>オンライン面談を受ける</h3><p>届いたZoomリンクから面談に参加。話すだけでOK。完了で協賛金の対象に。</p></div></div>
     </div>
   </section>
 
-  <!-- もらえるもの -->
+  <!-- PHOTO BAND 2 -->
+  <div class="photo r-43"><!-- assets/photo2.jpg -->
+    <img src="assets/photo2.jpg" alt="" onerror="this.style.display='none'">
+    <div class="hint" style="min-height:230px">［photo2.jpg：男性がスマホでオンライン面談している写真］</div>
+  </div>
+
+  <!-- REWARD -->
   <section class="pad">
-    <div class="kicker">REWARD</div>
-    <div class="h2">もらえるもの</div>
+    <div class="eyebrow">REWARD</div>
+    <div class="title">参加で<span class="o">もらえるもの</span></div>
     <div class="reward">
-      <div class="big">最大 20,000円 <small>（5,000円 × 4件）</small>💰</div>
-      <div class="sub">※ 協賛金は案内・条件により変動します</div>
+      <div class="lead">協賛金</div>
+      <div class="big">最大 20,000円 <small>（5,000円×4件）</small></div>
+      <div class="note">※ 協賛金は案内・条件により変動します</div>
       <ul>
         <li>就活の面談を"実践"で経験できる</li>
         <li>面接慣れ・自己PRの練習になる</li>
@@ -140,21 +197,35 @@
     </div>
   </section>
 
-  <!-- 安心ポイント -->
+  <!-- VOICE -->
+  <section class="pad" style="background:#f4f6fb;">
+    <div class="eyebrow">VOICE</div>
+    <div class="title">参加した学生の<span class="o">声</span></div>
+    <div class="voice">
+      <div class="top">
+        <div class="av"><!-- assets/voice1.jpg -->
+          <img src="assets/voice1.jpg" alt="" onerror="this.style.display='none'"></div>
+        <div><div class="stars">★★★★★</div><div class="who">大学3年・Aさん</div></div>
+      </div>
+      <p>「面接がほぼ初めてで不安でしたが、話すだけで練習になりました。活動費ももらえて一石二鳥でした！」</p>
+    </div>
+  </section>
+
+  <!-- SAFE -->
   <section class="pad">
-    <div class="kicker">SAFE</div>
-    <div class="h2">安心して参加できます</div>
+    <div class="eyebrow">SAFE</div>
+    <div class="title">安心して<span class="o">参加できます</span></div>
     <div class="safe">
-      <div class="row"><span class="e">🙆</span><div>無理な勧誘はありません。合わなければいつでもストップOK。</div></div>
-      <div class="row"><span class="e">💻</span><div>参加はオンライン中心。おうちからスマホ・PCで完結。</div></div>
-      <div class="row"><span class="e">🤝</span><div>予約はスタッフがサポート。就活が初めてでも大丈夫。</div></div>
+      <div class="row"><b>無理な勧誘はありません。</b>合わなければいつでもストップOK。</div>
+      <div class="row"><b>参加はオンライン中心。</b>おうちからスマホ・PCで完結します。</div>
+      <div class="row"><b>予約はスタッフがサポート。</b>就活が初めてでも大丈夫です。</div>
     </div>
   </section>
 
   <!-- FAQ -->
-  <section class="pad" style="background:#fff3e4;">
-    <div class="kicker">FAQ</div>
-    <div class="h2">よくある質問</div>
+  <section class="pad" style="background:#f4f6fb;">
+    <div class="eyebrow">FAQ</div>
+    <div class="title">よくある<span class="o">質問</span></div>
     <div class="faq">
       <details><summary>本当に協賛金はもらえる？</summary><p>面談の参加など、案件の条件を満たすとお渡しします。金額・条件は案内によって変わるため、最新のご案内をご確認ください。</p></details>
       <details><summary>面談って難しくない？</summary><p>話すだけでOKです。むしろ就活の練習になります。予約もスタッフがサポートします。</p></details>
@@ -163,16 +234,15 @@
   </section>
 
   <!-- CTA -->
-  <div class="ctaband">
+  <div class="cta">
     <h2>まずは登録してみよう</h2>
     <p>登録は無料・30秒。気になったら一歩踏み出すだけ。</p>
-    <a class="btn" href="https://s.lmes.jp/landing-qr/2010529394-w1FSLnW5?uLand=WLgzIl">▶ 参加してみる（無料）</a>
-    <div class="note">※ 18歳以上の学生対象／プロモーションコード「a-0010」を入力してください。<br>※ 案件内容・協賛金は変更になる場合があります。</div>
+    <a class="btn" href="https://s.lmes.jp/landing-qr/2010529394-w1FSLnW5?uLand=WLgzIl">参加してみる（無料）</a>
+    <div class="fine">※ 18歳以上の学生対象／登録時にプロモーションコード「a-0010」を入力してください。<br>※ 案件内容・協賛金は変更になる場合があります。</div>
   </div>
 
-  <footer>提供：ガクチカ協賛（代表：豊田 樹生）× JobPassport</footer>
+  <footer>提供：ガクチカ協賛（代表 豊田 樹生）× JobPassport</footer>
 
-  <!-- sticky CTA -->
   <div class="sticky"><a href="https://s.lmes.jp/landing-qr/2010529394-w1FSLnW5?uLand=WLgzIl">参加してみる（無料）→</a></div>
 
 </div>
