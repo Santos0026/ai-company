@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ガクチカ協賛 リッチメニュー デザイン案</title>
+<style>
+  :root{ --orange:#F57C20; --orange-d:#E06A10; --yellow:#FFC93C; --ink:#3a2a12; }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  body{ font-family:-apple-system,"Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;
+        background:#eef1f5; display:flex; flex-direction:column; align-items:center; padding:24px 12px; gap:12px; }
+  .cap{ font-size:13px; color:#555; }
+  .menu{ width:100%; max-width:500px; aspect-ratio:2500/1686; background:#fff;
+         border-radius:18px; overflow:hidden; box-shadow:0 10px 30px rgba(0,0,0,.18);
+         display:grid; grid-template-columns:repeat(3,1fr); grid-template-rows:repeat(2,1fr);
+         border:3px solid var(--orange); }
+  .cell{ position:relative; display:flex; flex-direction:column; align-items:center; justify-content:center;
+         gap:6px; border:1px solid #ffe6cf; background:#fffdfa; }
+  .cell .ic{ font-size:34px; line-height:1; }
+  .cell .lb{ font-size:13px; font-weight:800; color:var(--ink); letter-spacing:.02em; }
+  .cell .sub{ font-size:9px; color:#b07a3a; }
+  /* accent the primary action */
+  .cell.primary{ background:linear-gradient(160deg,var(--orange),var(--orange-d)); border-color:var(--orange-d); }
+  .cell.primary .lb{ color:#fff; } .cell.primary .sub{ color:#ffe6cf; }
+  .cell.primary .ic{ filter:drop-shadow(0 1px 1px rgba(0,0,0,.2)); }
+  .brandbar{ width:100%; max-width:500px; background:var(--orange); color:#fff; border-radius:12px;
+             padding:8px 14px; font-size:12px; display:flex; justify-content:space-between; align-items:center; }
+  .brandbar b{ font-size:14px; }
+</style>
+</head>
+<body>
+  <div class="cap">▼ リッチメニュー デザイン案（大サイズ6分割・2500×1686px）</div>
+  <div class="menu">
+    <div class="cell primary"><span class="ic">🔍</span><span class="lb">案件をさがす</span><span class="sub">今すぐ探す</span></div>
+    <div class="cell"><span class="ic">📝</span><span class="lb">就活予約報告</span><span class="sub">予約したら</span></div>
+    <div class="cell"><span class="ic">✅</span><span class="lb">就活完了報告</span><span class="sub">面談おわったら</span></div>
+    <div class="cell"><span class="ic">👤</span><span class="lb">プロフィール確認</span><span class="sub">登録内容</span></div>
+    <div class="cell"><span class="ic">❓</span><span class="lb">よくある質問</span><span class="sub">はじめての方へ</span></div>
+    <div class="cell"><span class="ic">💬</span><span class="lb">相談する</span><span class="sub">気軽にどうぞ</span></div>
+  </div>
+  <div class="brandbar"><b>🎓 ガクチカ協賛</b><span>学生限定モニターサービス｜提携200大学・1500団体</span></div>
+  <div class="cap">配色：オレンジ #F57C20 / 黄 #FFC93C / 白。左上「案件をさがす」だけ濃いオレンジで主役に。</div>
+</body>
+</html>
