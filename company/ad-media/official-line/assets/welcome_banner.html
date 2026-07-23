@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<style>
+  :root{ --orange:#F57C20; --orange-d:#E0670F; --yellow:#FFD35A; --ink:#3a2a12; }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html,body{ width:1024px; height:678px; }
+  body{ font-family:"Noto Sans CJK JP","Noto Color Emoji",sans-serif;
+        background:radial-gradient(120% 120% at 20% 0%, #FFB25A 0%, #F57C20 45%, #E0670F 100%);
+        color:#fff; position:relative; overflow:hidden; }
+  .dots{ position:absolute; inset:0; background-image:radial-gradient(#ffffff33 4px, transparent 5px);
+         background-size:44px 44px; opacity:.4; }
+  .wrap{ position:relative; height:100%; display:flex; flex-direction:column; align-items:center;
+         justify-content:center; text-align:center; padding:34px; gap:0; }
+  .tag{ display:inline-block; background:#ffffff; color:var(--orange-d); font-weight:900; font-size:24px;
+        padding:8px 24px; border-radius:100px; margin-bottom:16px; box-shadow:0 5px 12px rgba(0,0,0,.15); }
+  .cap{ font-size:78px; line-height:1; margin-bottom:6px; }
+  h1{ font-size:66px; font-weight:900; letter-spacing:.02em; line-height:1.18; text-shadow:0 3px 0 rgba(0,0,0,.12); }
+  h1 .y{ color:var(--yellow); }
+  p.sub{ font-size:29px; font-weight:700; margin-top:14px; opacity:.97; }
+  .cta{ margin-top:28px; background:var(--yellow); color:#5a3d00; font-size:33px; font-weight:900;
+        padding:16px 40px; border-radius:100px; box-shadow:0 8px 18px rgba(0,0,0,.22); }
+  .cta small{ display:block; font-size:19px; font-weight:800; opacity:.75; margin-top:3px; }
+</style>
+</head>
+<body>
+  <div class="dots"></div>
+  <div class="wrap">
+    <span class="tag">学生限定モニターサービス</span>
+    <div class="cap">🎓</div>
+    <h1>ようこそ！<br><span class="y">ガクチカ協賛</span>へ</h1>
+    <p class="sub">スマホ1つで参加OK・謝礼ももらえる✨</p>
+    <div class="cta">▶ タップして30秒登録スタート<small>まずはかんたんプロフィール登録から</small></div>
+  </div>
+</body>
+</html>
