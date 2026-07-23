@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>就活オンライン面談モニター（JobPassport）｜ガクチカ協賛</title>
+<meta name="description" content="オンラインで面談を受けるだけ。就活の練習になって協賛金（最大20,000円）ももらえる、学生向けモニター案件です。">
+<style>
+  :root{
+    --orange:#F57C20; --orange-d:#E0670F; --yellow:#FFD35A; --navy:#20386b;
+    --ink:#2b2b2b; --muted:#70737a; --bg:#fff8f1; --card:#fff; --line:#f0e2d1;
+  }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html{ scroll-behavior:smooth; }
+  body{ font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;
+        color:var(--ink); background:var(--bg); line-height:1.8; -webkit-font-smoothing:antialiased; }
+  .wrap{ max-width:480px; margin:0 auto; background:var(--bg); min-height:100vh; overflow:hidden; }
+  img{ max-width:100%; display:block; }
+  .pad{ padding:0 20px; }
+
+  /* hero */
+  .hero{ background:linear-gradient(160deg,#FFB25A,var(--orange-d)); color:#fff; padding:26px 20px 30px; text-align:center; position:relative; }
+  .hero .brandrow{ display:flex; align-items:center; justify-content:center; gap:6px; font-size:12px; font-weight:800; opacity:.95; margin-bottom:12px; }
+  .badge{ display:inline-block; background:var(--yellow); color:#5a3d00; font-weight:900; font-size:15px;
+          padding:7px 18px; border-radius:100px; margin-bottom:12px; box-shadow:0 4px 10px rgba(0,0,0,.15); }
+  .hero h1{ font-size:26px; font-weight:900; line-height:1.4; }
+  .hero h1 .y{ color:var(--yellow); }
+  .hero p{ font-size:14px; margin-top:10px; opacity:.97; }
+  .heroimg{ margin:18px auto 0; border-radius:16px; overflow:hidden; border:3px solid #ffffff55; }
+  .heroimg .ph{ background:#ffe9d2; color:#c98a48; height:170px; display:flex; align-items:center; justify-content:center;
+                font-size:13px; text-align:center; padding:12px; }
+
+  section{ padding:34px 0; }
+  .kicker{ text-align:center; color:var(--orange-d); font-weight:900; font-size:12px; letter-spacing:.1em; }
+  .h2{ text-align:center; font-size:21px; font-weight:900; margin:4px 0 20px; }
+
+  /* fit list */
+  .fit{ display:flex; flex-direction:column; gap:10px; }
+  .fit .row{ background:var(--card); border:1px solid var(--line); border-radius:14px; padding:14px 16px;
+             display:flex; gap:12px; align-items:center; font-weight:700; font-size:14.5px; }
+  .fit .row .e{ font-size:24px; }
+
+  /* steps */
+  .steps{ display:flex; flex-direction:column; gap:0; position:relative; }
+  .step{ background:var(--card); border:1px solid var(--line); border-radius:16px; padding:18px; margin-bottom:14px; position:relative; }
+  .step .no{ position:absolute; top:-10px; left:16px; background:var(--orange); color:#fff; font-weight:900;
+             font-size:12px; padding:3px 12px; border-radius:100px; }
+  .step h3{ font-size:16px; margin:8px 0 4px; }
+  .step p{ font-size:13px; color:var(--muted); }
+  .step .e{ font-size:30px; float:right; margin-left:10px; }
+  .arrow{ text-align:center; color:var(--orange); font-size:20px; margin:-6px 0 8px; }
+
+  /* reward */
+  .reward{ background:linear-gradient(160deg,#fff,#fff3e4); border:2px solid var(--yellow); border-radius:18px; padding:22px; text-align:center; }
+  .reward .big{ font-size:30px; font-weight:900; color:var(--orange-d); }
+  .reward .big small{ font-size:15px; }
+  .reward .sub{ font-size:12.5px; color:var(--muted); margin-top:4px; }
+  .reward ul{ list-style:none; margin-top:16px; text-align:left; display:flex; flex-direction:column; gap:8px; }
+  .reward li{ font-size:14px; font-weight:700; padding-left:26px; position:relative; }
+  .reward li::before{ content:"✓"; position:absolute; left:0; color:#1aa54a; font-weight:900; }
+
+  /* safe */
+  .safe{ background:var(--card); border:1px solid var(--line); border-radius:16px; padding:18px; }
+  .safe .row{ display:flex; gap:10px; align-items:flex-start; font-size:13.5px; margin-bottom:10px; }
+  .safe .row:last-child{ margin-bottom:0; }
+  .safe .e{ font-size:18px; }
+
+  /* faq */
+  .faq details{ background:var(--card); border:1px solid var(--line); border-radius:12px; padding:2px 14px; margin-bottom:9px; }
+  .faq summary{ cursor:pointer; font-weight:700; padding:11px 0; list-style:none; font-size:14px; }
+  .faq summary::-webkit-details-marker{ display:none; }
+  .faq summary::before{ content:"Q. "; color:var(--orange); font-weight:900; }
+  .faq p{ padding:0 0 12px; color:var(--muted); font-size:13px; }
+
+  /* cta */
+  .ctaband{ background:linear-gradient(160deg,var(--orange),var(--orange-d)); color:#fff; text-align:center; padding:32px 20px 36px; }
+  .ctaband h2{ font-size:20px; margin-bottom:6px; }
+  .ctaband p{ font-size:13px; opacity:.95; margin-bottom:18px; }
+  .btn{ display:block; background:#fff; color:var(--orange-d); font-weight:900; font-size:18px; text-decoration:none;
+        padding:16px; border-radius:100px; box-shadow:0 8px 18px rgba(0,0,0,.2); }
+  .note{ font-size:11px; opacity:.9; margin-top:14px; line-height:1.7; }
+  footer{ text-align:center; font-size:11px; color:var(--muted); padding:20px; }
+
+  .sticky{ position:sticky; bottom:0; background:#fffffff2; backdrop-filter:blur(6px); border-top:1px solid var(--line);
+           padding:10px 16px; }
+  .sticky a{ display:block; background:var(--orange); color:#fff; font-weight:900; text-decoration:none; text-align:center;
+             padding:14px; border-radius:100px; font-size:16px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="brandrow">🎓 ガクチカ協賛 <span style="opacity:.6">×</span> 🌏 JobPassport</div>
+    <span class="badge">協賛金 最大20,000円</span>
+    <h1>就活オンライン面談<br>モニター<span class="y"></span></h1>
+    <p>オンラインで話すだけ。就活の練習になって、協賛金ももらえる。</p>
+    <div class="heroimg">
+      <div class="ph">［ここに面談中の写真（生成済みのリアル画像）を入れる］</div>
+    </div>
+  </div>
+
+  <!-- こんな人に -->
+  <section class="pad">
+    <div class="kicker">FOR YOU</div>
+    <div class="h2">こんな学生におすすめ</div>
+    <div class="fit">
+      <div class="row"><span class="e">🎯</span>就活をこれから始めたい・練習したい</div>
+      <div class="row"><span class="e">🎓</span>「ガクチカ」として話せる経験がほしい</div>
+      <div class="row"><span class="e">💰</span>スキマ時間で協賛金ももらいたい</div>
+    </div>
+  </section>
+
+  <!-- 3ステップ -->
+  <section class="pad" style="background:#fff3e4;">
+    <div class="kicker">HOW IT WORKS</div>
+    <div class="h2">参加はかんたん3ステップ</div>
+    <div class="steps">
+      <div class="step"><span class="no">STEP 1</span><span class="e">📝</span><h3>かんたん登録（30秒）</h3><p>JobPassportに登録して、プロフィールを入力するだけ。※プロモーションコード「a-0010」を入力してね。</p></div>
+      <div class="arrow">▼</div>
+      <div class="step"><span class="no">STEP 2</span><span class="e">📞</span><h3>面談を予約（スタッフがサポート）</h3><p>後日お電話で、面談の予約を一緒に進めます。初めてでも安心。</p></div>
+      <div class="arrow">▼</div>
+      <div class="step"><span class="no">STEP 3</span><span class="e">💻</span><h3>オンライン面談を受ける</h3><p>届いたZoomリンクから面談に参加。話すだけでOK。完了で協賛金の対象に。</p></div>
+    </div>
+  </section>
+
+  <!-- もらえるもの -->
+  <section class="pad">
+    <div class="kicker">REWARD</div>
+    <div class="h2">もらえるもの</div>
+    <div class="reward">
+      <div class="big">最大 20,000円 <small>（5,000円 × 4件）</small>💰</div>
+      <div class="sub">※ 協賛金は案内・条件により変動します</div>
+      <ul>
+        <li>就活の面談を"実践"で経験できる</li>
+        <li>面接慣れ・自己PRの練習になる</li>
+        <li>「ガクチカ」として話せるエピソードに</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 安心ポイント -->
+  <section class="pad">
+    <div class="kicker">SAFE</div>
+    <div class="h2">安心して参加できます</div>
+    <div class="safe">
+      <div class="row"><span class="e">🙆</span><div>無理な勧誘はありません。合わなければいつでもストップOK。</div></div>
+      <div class="row"><span class="e">💻</span><div>参加はオンライン中心。おうちからスマホ・PCで完結。</div></div>
+      <div class="row"><span class="e">🤝</span><div>予約はスタッフがサポート。就活が初めてでも大丈夫。</div></div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="pad" style="background:#fff3e4;">
+    <div class="kicker">FAQ</div>
+    <div class="h2">よくある質問</div>
+    <div class="faq">
+      <details><summary>本当に協賛金はもらえる？</summary><p>面談の参加など、案件の条件を満たすとお渡しします。金額・条件は案内によって変わるため、最新のご案内をご確認ください。</p></details>
+      <details><summary>面談って難しくない？</summary><p>話すだけでOKです。むしろ就活の練習になります。予約もスタッフがサポートします。</p></details>
+      <details><summary>誰でも参加できる？</summary><p>18歳以上の学生（大学・短大・専門・高専）が対象です。</p></details>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <div class="ctaband">
+    <h2>まずは登録してみよう</h2>
+    <p>登録は無料・30秒。気になったら一歩踏み出すだけ。</p>
+    <a class="btn" href="https://s.lmes.jp/landing-qr/2010529394-w1FSLnW5?uLand=WLgzIl">▶ 参加してみる（無料）</a>
+    <div class="note">※ 18歳以上の学生対象／プロモーションコード「a-0010」を入力してください。<br>※ 案件内容・協賛金は変更になる場合があります。</div>
+  </div>
+
+  <footer>提供：ガクチカ協賛（代表：豊田 樹生）× JobPassport</footer>
+
+  <!-- sticky CTA -->
+  <div class="sticky"><a href="https://s.lmes.jp/landing-qr/2010529394-w1FSLnW5?uLand=WLgzIl">参加してみる（無料）→</a></div>
+
+</div>
+</body>
+</html>
