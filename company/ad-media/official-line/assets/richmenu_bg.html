@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<style>
+  :root{ --orange:#F57C20; --orange-d:#E06A10; --yellow:#FFC93C; --ink:#2f2413; }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html,body{ width:2500px; height:1686px; }
+  body{ font-family:"Noto Sans CJK JP","Noto Color Emoji",sans-serif; background:#fff; }
+  .grid{ width:2500px; height:1686px; display:grid;
+         grid-template-columns:repeat(3, 1fr); grid-template-rows:repeat(2, 1fr); }
+  .cell{ position:relative; display:flex; flex-direction:column; align-items:center; justify-content:center;
+         gap:26px; background:#FFFDFA; }
+  /* dividers */
+  .cell{ border-right:3px solid #F3E4D2; border-bottom:3px solid #F3E4D2; }
+  .cell:nth-child(3n){ border-right:none; }
+  .cell:nth-child(n+4){ border-bottom:none; }
+  .ic{ font-family:"Noto Color Emoji"; font-size:150px; line-height:1; }
+  .lb{ font-size:66px; font-weight:900; color:var(--ink); letter-spacing:.02em; }
+  .sub{ font-size:34px; color:#b98a4f; font-weight:700; }
+  /* primary cell */
+  .primary{ background:linear-gradient(155deg,#FF9A3D,var(--orange-d)); }
+  .primary .lb{ color:#fff; }
+  .primary .sub{ color:#ffe9d2; }
+  .badge{ position:absolute; top:70px; right:78px; background:var(--yellow); color:#5a3d00;
+          font-size:30px; font-weight:900; padding:12px 26px; border-radius:100px; }
+</style>
+</head>
+<body>
+  <div class="grid">
+    <div class="cell primary">
+      <span class="badge">まずはココ</span>
+      <span class="ic">🔍</span><span class="lb">案件をさがす</span><span class="sub">今すぐ探す</span>
+    </div>
+    <div class="cell"><span class="ic">📝</span><span class="lb">就活予約報告</span><span class="sub">予約したら</span></div>
+    <div class="cell"><span class="ic">✅</span><span class="lb">就活完了報告</span><span class="sub">面談おわったら</span></div>
+    <div class="cell"><span class="ic">👤</span><span class="lb">プロフィール確認</span><span class="sub">登録内容</span></div>
+    <div class="cell"><span class="ic">❓</span><span class="lb">よくある質問</span><span class="sub">はじめての方へ</span></div>
+    <div class="cell"><span class="ic">💬</span><span class="lb">相談する</span><span class="sub">気軽にどうぞ</span></div>
+  </div>
+</body>
+</html>
