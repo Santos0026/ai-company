@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ガクチカ協賛｜スマホ1つで参加できる、学生限定モニターサービス</title>
+<meta name="description" content="ガクチカ協賛は、大学生・専門学生など学生限定のモニターサービス。アンケート・面談・インタビュー・アプリモニターにスマホ1つで参加でき、就活の「ガクチカ」にもつながります。提携200大学・1500団体、利用者600人突破。">
+<meta property="og:title" content="ガクチカ協賛｜学生限定モニターサービス">
+<meta property="og:description" content="スマホ1つで参加できる学生限定モニターサービス。提携200大学・1500団体、利用者600人突破。">
+<meta property="og:type" content="website">
+<style>
+  :root{
+    --orange:#F57C20; --orange-d:#E06A10; --yellow:#FFC93C; --ink:#2b2b2b;
+    --muted:#6b6b6b; --bg:#fffaf4; --card:#ffffff; --line:#f0e2d2;
+  }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html{ scroll-behavior:smooth; }
+  body{ font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;
+        color:var(--ink); background:var(--bg); line-height:1.75; -webkit-font-smoothing:antialiased; }
+  img{ max-width:100%; display:block; }
+  a{ color:var(--orange-d); }
+  .wrap{ max-width:960px; margin:0 auto; padding:0 20px; }
+  .btn-line{ display:inline-flex; align-items:center; gap:8px; background:#06C755; color:#fff;
+             font-weight:800; text-decoration:none; padding:12px 22px; border-radius:999px;
+             box-shadow:0 6px 16px rgba(6,199,85,.3); font-size:15px; }
+  .btn-line:hover{ filter:brightness(.96); }
+
+  /* header */
+  header{ position:sticky; top:0; z-index:50; background:#fffaf4ee; backdrop-filter:blur(8px);
+          border-bottom:1px solid var(--line); }
+  .nav{ display:flex; align-items:center; justify-content:space-between; height:62px; }
+  .brand{ display:flex; align-items:center; gap:9px; font-weight:900; font-size:19px; color:var(--orange-d); }
+  .brand .cap{ font-size:22px; }
+  .nav .btn-line{ padding:9px 16px; font-size:13px; }
+
+  /* hero */
+  .hero{ background:linear-gradient(160deg,#FFE7CE,#FFF7EC 60%); padding:56px 0 48px; text-align:center; }
+  .hero .tag{ display:inline-block; background:#fff; color:var(--orange-d); font-weight:800; font-size:13px;
+              border:1.5px solid var(--yellow); border-radius:999px; padding:5px 14px; margin-bottom:18px; }
+  .hero h1{ font-size:34px; line-height:1.4; letter-spacing:.01em; }
+  .hero h1 .o{ color:var(--orange); }
+  .hero p.lead{ margin:16px auto 26px; max-width:620px; color:#584a38; font-size:16px; }
+  .hero .cta-row{ display:flex; gap:12px; justify-content:center; flex-wrap:wrap; align-items:center; }
+  .hero .sub{ font-size:12px; color:var(--muted); margin-top:14px; }
+
+  /* stats */
+  .stats{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin:34px 0 0; }
+  .stat{ background:var(--card); border:1px solid var(--line); border-radius:16px; padding:18px 10px; text-align:center; }
+  .stat b{ display:block; font-size:26px; color:var(--orange); font-weight:900; }
+  .stat span{ font-size:12px; color:var(--muted); }
+
+  section{ padding:48px 0; }
+  .sec-title{ text-align:center; font-size:24px; font-weight:900; margin-bottom:6px; }
+  .sec-sub{ text-align:center; color:var(--muted); font-size:13px; margin-bottom:30px; }
+
+  /* services */
+  .cards{ display:grid; grid-template-columns:repeat(2,1fr); gap:14px; }
+  .svc{ background:var(--card); border:1px solid var(--line); border-radius:16px; padding:20px; }
+  .svc .ic{ font-size:30px; }
+  .svc h3{ font-size:17px; margin:8px 0 4px; }
+  .svc p{ font-size:13px; color:var(--muted); }
+
+  /* steps */
+  .steps{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+  .step{ background:var(--card); border:1px solid var(--line); border-radius:16px; padding:20px; text-align:center; }
+  .step .n{ width:34px; height:34px; margin:0 auto 10px; border-radius:50%; background:var(--orange); color:#fff;
+            font-weight:900; display:flex; align-items:center; justify-content:center; }
+  .step h4{ font-size:15px; margin-bottom:4px; } .step p{ font-size:12.5px; color:var(--muted); }
+
+  /* info table */
+  .infowrap{ background:var(--card); border:1px solid var(--line); border-radius:16px; overflow:hidden; }
+  table.info{ width:100%; border-collapse:collapse; font-size:14px; }
+  table.info th, table.info td{ text-align:left; padding:14px 16px; border-bottom:1px solid var(--line); vertical-align:top; }
+  table.info th{ width:34%; background:#fff6ea; color:#7a5a2c; font-weight:700; white-space:nowrap; }
+  table.info tr:last-child th, table.info tr:last-child td{ border-bottom:none; }
+
+  /* faq */
+  .faq details{ background:var(--card); border:1px solid var(--line); border-radius:12px; padding:4px 16px; margin-bottom:10px; }
+  .faq summary{ cursor:pointer; font-weight:700; padding:12px 0; list-style:none; font-size:15px; }
+  .faq summary::-webkit-details-marker{ display:none; }
+  .faq summary::before{ content:"Q. "; color:var(--orange); font-weight:900; }
+  .faq details p{ padding:0 0 14px; color:var(--muted); font-size:14px; }
+
+  /* privacy */
+  .policy{ background:var(--card); border:1px solid var(--line); border-radius:16px; padding:24px; font-size:13.5px; color:#4a4a4a; }
+  .policy h3{ font-size:15px; margin:18px 0 6px; color:var(--ink); } .policy h3:first-child{ margin-top:0; }
+  .policy p, .policy li{ color:#5a5a5a; } .policy ul{ padding-left:20px; }
+
+  /* cta band */
+  .ctaband{ background:linear-gradient(160deg,var(--orange),var(--orange-d)); color:#fff; text-align:center; border-radius:20px; padding:40px 20px; }
+  .ctaband h2{ font-size:23px; margin-bottom:8px; }
+  .ctaband p{ opacity:.95; font-size:14px; margin-bottom:22px; }
+  .ctaband .btn-line{ background:#fff; color:#06934a; }
+
+  footer{ text-align:center; padding:34px 0 50px; color:var(--muted); font-size:12px; }
+  footer a{ color:var(--muted); text-decoration:none; margin:0 8px; }
+  .todo{ background:#fff3cd; border:1px solid #ffe08a; color:#7a5a00; font-size:12px; border-radius:8px; padding:8px 12px; margin-top:10px; display:inline-block; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <div class="brand"><span class="cap">🎓</span>ガクチカ協賛</div>
+    <a class="btn-line" href="https://lin.ee/qKGm2Bf">LINEで参加する</a>
+  </div>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="wrap">
+    <span class="tag">学生限定モニターサービス</span>
+    <h1>スマホ1つで参加できる、<br><span class="o">学生のためのモニター</span>サービス</h1>
+    <p class="lead">アンケート・面談・インタビュー・アプリモニター。授業のスキマや通学中に参加できて、就活の「ガクチカ」にもつながります。</p>
+    <div class="cta-row">
+      <a class="btn-line" href="https://lin.ee/qKGm2Bf">LINEで無料参加する</a>
+      <a href="https://www.instagram.com/gakutika_kyosan" style="font-size:13px;font-weight:700;">Instagramを見る →</a>
+    </div>
+    <p class="sub">※ 18歳以上の学生対象（大学・短大・専門・高専）</p>
+
+    <div class="stats">
+      <div class="stat"><b>200<small>大学</small></b><span>提携大学</span></div>
+      <div class="stat"><b>1500<small>団体</small></b><span>提携学生団体</span></div>
+      <div class="stat"><b>600<small>人</small></b><span>利用者突破</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section id="service">
+  <div class="wrap">
+    <h2 class="sec-title">できること</h2>
+    <p class="sec-sub">興味のあるものだけ、好きなペースで参加できます</p>
+    <div class="cards">
+      <div class="svc"><div class="ic">📝</div><h3>アンケート回答</h3><p>所要10分ほど。スキマ時間でサクッと参加できます。</p></div>
+      <div class="svc"><div class="ic">💬</div><h3>無料面談</h3><p>オンラインで相談しながら。就活の相談にも。</p></div>
+      <div class="svc"><div class="ic">🎤</div><h3>インタビュー参加</h3><p>対面・オンライン。お話するだけでOK。</p></div>
+      <div class="svc"><div class="ic">📱</div><h3>アプリモニター</h3><p>数日間つかってみるだけ。新歓費用にも。</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- STEPS -->
+<section id="flow" style="background:#fff6ea;">
+  <div class="wrap">
+    <h2 class="sec-title">参加の流れ</h2>
+    <p class="sec-sub">かんたん3ステップ</p>
+    <div class="steps">
+      <div class="step"><div class="n">1</div><h4>LINEを追加</h4><p>公式LINEを友だち追加して、30秒のプロフィール登録。</p></div>
+      <div class="step"><div class="n">2</div><h4>案件を選ぶ</h4><p>届いた案件から、興味のあるものを選んで応募。</p></div>
+      <div class="step"><div class="n">3</div><h4>参加する</h4><p>案内にそって参加。就活の経験にもつながります。</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 運営者情報 -->
+<section id="about">
+  <div class="wrap">
+    <h2 class="sec-title">運営者情報</h2>
+    <p class="sec-sub">安心してご参加いただくために</p>
+    <div class="infowrap">
+      <table class="info">
+        <tr><th>サービス名</th><td>ガクチカ協賛</td></tr>
+        <tr><th>運営形態</th><td>個人事業主（屋号：ガクチカ協賛）</td></tr>
+        <tr><th>代表者</th><td>豊田 樹生</td></tr>
+        <tr><th>事業内容</th><td>学生向けモニターサービスの運営・提携先案件のご案内</td></tr>
+        <tr><th>提携実績</th><td>提携200大学・1500団体／利用者600人突破</td></tr>
+        <tr><th>お問い合わせ</th><td>公式LINEより承っております（<a href="https://lin.ee/qKGm2Bf">LINEで問い合わせる</a>）<br><span style="color:#999;font-size:12px;">お問い合わせ用メールアドレスは準備中です。</span></td></tr>
+        <tr><th>所在地</th><td>ご請求いただいた場合、遅滞なく開示いたします。</td></tr>
+      </table>
+    </div>
+    <!-- TODO(公開前): お問い合わせメールアドレスが決まったら上記に反映する -->
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" style="background:#fff6ea;">
+  <div class="wrap">
+    <h2 class="sec-title">よくある質問</h2>
+    <p class="sec-sub">はじめての方へ</p>
+    <div class="faq">
+      <details><summary>お金はもらえますか？</summary><p>案件ごとの条件を満たすと謝礼をお渡しします。金額・条件は案件ごとに異なるため、公式LINEでの各案件のご案内をご確認ください。</p></details>
+      <details><summary>学生じゃないと参加できませんか？</summary><p>18歳以上の学生限定のサービスです（大学・短大・専門・高専の方が対象です）。</p></details>
+      <details><summary>途中でやめてもいいですか？</summary><p>無理な勧誘はいたしません。合わないと感じたら、いつでも参加をストップしていただけます。</p></details>
+      <details><summary>個人情報は大丈夫ですか？</summary><p>案件のご案内・ご連絡に必要な範囲でのみ利用します。詳しくはプライバシーポリシーをご覧ください。</p></details>
+      <details><summary>お金がかかることはありますか？</summary><p>参加にあたって費用をいただくことはありません。</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section>
+  <div class="wrap">
+    <div class="ctaband">
+      <h2>まずはLINEで、案件をのぞいてみよう</h2>
+      <p>登録は30秒。気になる案件があれば参加するだけ。</p>
+      <a class="btn-line" href="https://lin.ee/qKGm2Bf">LINEで無料参加する</a>
+    </div>
+  </div>
+</section>
+
+<!-- PRIVACY -->
+<section id="privacy">
+  <div class="wrap">
+    <h2 class="sec-title">プライバシーポリシー</h2>
+    <p class="sec-sub"></p>
+    <div class="policy">
+      <p>ガクチカ協賛（以下「当サービス」）は、利用者の個人情報を以下のとおり取り扱います。</p>
+      <h3>1. 取得する情報</h3>
+      <p>氏名（ニックネーム含む）、年齢、在学している学校名・学年、その他ご登録・お問い合わせの際にご提供いただく情報。</p>
+      <h3>2. 利用目的</h3>
+      <ul>
+        <li>ご希望に合った案件のご案内・ご連絡のため</li>
+        <li>提携先の案件へのお申し込み・参加のサポートのため</li>
+        <li>サービスの品質向上・お問い合わせ対応のため</li>
+      </ul>
+      <h3>3. 第三者提供について</h3>
+      <p>案件のご案内・参加にあたり必要な範囲で、ご本人の同意のうえ、提携先（案件の提供事業者）に情報を提供する場合があります。それ以外に、法令に基づく場合を除き、ご本人の同意なく第三者へ提供することはありません。</p>
+      <h3>4. 個人情報の管理</h3>
+      <p>取得した情報は適切に管理し、漏えい・滅失・毀損の防止に努めます。</p>
+      <h3>5. 開示・訂正・削除</h3>
+      <p>ご本人からのご請求に応じ、保有する個人情報の開示・訂正・削除に対応します。公式LINEよりご連絡ください。</p>
+      <h3>6. 改定</h3>
+      <p>本ポリシーは必要に応じて改定することがあります。最新の内容は本ページに掲載します。</p>
+      <p style="margin-top:16px;color:#999;">制定日：2026年7月／ガクチカ協賛（代表：豊田 樹生）</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="brand" style="justify-content:center;margin-bottom:10px;"><span class="cap">🎓</span>ガクチカ協賛</div>
+    <a href="#service">できること</a>・<a href="#about">運営者情報</a>・<a href="#faq">よくある質問</a>・<a href="#privacy">プライバシーポリシー</a>
+    <p style="margin-top:14px;">© 2026 ガクチカ協賛（代表：豊田 樹生）</p>
+  </div>
+</footer>
+
+</body>
+</html>
