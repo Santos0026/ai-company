@@ -10,9 +10,9 @@
 
 | 項目 | 内容 |
 |------|------|
-| 保有アカウント | TikTok 約2,600フォロワー（顔出し・個人ブランディング型） |
+| 保有アカウント | TikTok **@isstoy72** 約2,600フォロワー（顔出し・個人ブランディング型） |
 | ゴール | **両方** — 早期の現金化 ＋ 本業（ヒトモノチイキ）への送客 |
-| 稼働可能量 | **週2〜3本が限界**（本業がメイン） |
+| 稼働可能量 | **撮影に週90分**（当初「週2〜3本が限界」。短尺化により同じ90分で週5本に増量 → `tiktok_growth_plan_10k.md`） |
 | 既存資産 | @hitomono_chiiki（Instagram）／@hitomono_chiiki.interview（Threads・1.7万フォロワー） |
 | 既存の収益単位 | FP面談申込 **1件 = 16,100円**（2026年4月実績：月52件・837,200円） |
 
@@ -119,9 +119,12 @@ TikTok（顔出し・週2〜3本）
 
 **大原則：撮影回数は週1回にまとめ、1本のコンテンツを3媒体に展開する。**
 
+> **2026-08-28 更新**：フォロワー1万人を目標に設定したため、**20〜35秒の短尺 × 週5本**に変更。
+> 撮影は週90分のまま（短尺は1本3〜5分で撮れるため、同じ90分で10本撮れる）。詳細は `operations/templates/tiktok_growth_plan_10k.md`。
+
 ```
 【週1回・90分の収録日】
-  台本3本ぶんを一気に撮影（着替えなし・同じ場所・カット割りだけ変える）
+  短尺台本10〜12本を一気に撮影（着替えなし・同じ場所・カット割りだけ変える）
         ↓
   ┌─────────────┬──────────────┬─────────────┐
   │ TikTok      │ Instagramリール │ Threads      │
@@ -239,4 +242,4 @@ FP面談申込：      件 →  売上          円
 ---
 
 *作成: 2026-08-28 by Jobs*
-*関連: `company/strategy/BUSINESS_OVERVIEW.md` / `operations/reports/2026-04_funnel_analysis.md` / `operations/templates/threads_content_calendar.md`*
+*関連: `operations/templates/tiktok_growth_plan_10k.md` / `company/strategy/BUSINESS_OVERVIEW.md` / `operations/reports/2026-04_funnel_analysis.md` / `operations/templates/threads_content_calendar.md`*
